@@ -8,9 +8,9 @@
     },
     {
       "id": "welcome-bg",
-      "description": "Elegant wedding couple posing",
-      "imageUrl": "https://picsum.photos/seed/wedding1/1080/1920",
-      "imageHint": "wedding couple"
+      "description": "The Wedding Of Nelson & Suni",
+      "imageUrl": "/Background/Page_1.png",
+      "imageHint": "wedding background"
     },
     {
       "id": "couple-bg",
@@ -20,15 +20,15 @@
     },
     {
       "id": "event-bg",
-      "description": "Cathedral or church interior",
-      "imageUrl": "https://picsum.photos/seed/wedding_church/1080/1920",
-      "imageHint": "church interior"
+      "description": "Acara Penting Background",
+      "imageUrl": "/Background/Page_4.png",
+      "imageHint": "wedding event"
     },
     {
       "id": "story-bg",
-      "description": "Couple holding hands close up",
-      "imageUrl": "https://picsum.photos/seed/wedding2/1080/1920",
-      "imageHint": "wedding hands"
+      "description": "Kisah Kami Background",
+      "imageUrl": "/Background/Page_3.png",
+      "imageHint": "wedding story"
     },
     {
       "id": "rsvp-bg",
@@ -44,9 +44,9 @@
     },
     {
       "id": "gift-bg",
-      "description": "Elegant gift box or envelope",
-      "imageUrl": "https://picsum.photos/seed/wedding_gift/1080/1920",
-      "imageHint": "gift box"
+      "description": "Hadiah Cinta Background",
+      "imageUrl": "/Background/Page_4.png",
+      "imageHint": "wedding gift"
     }
   ]
 }
