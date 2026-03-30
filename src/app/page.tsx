@@ -49,8 +49,33 @@ export default function Home() {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [isLocationOpen, setIsLocationOpen] = useState(false)
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
   
   const audioRef = useRef<HTMLAudioElement>(null)
+
+  // Countdown Logic
+  useEffect(() => {
+    const targetDate = new Date("2025-12-24T09:00:00").getTime()
+
+    const timer = setInterval(() => {
+      const now = new Date().getTime()
+      const difference = targetDate - now
+
+      if (difference <= 0) {
+        clearInterval(timer)
+        return
+      }
+
+      setTimeLeft({
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / 1000 / 60) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      })
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [])
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -147,15 +172,6 @@ export default function Home() {
             transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden"
           >
-            <div className="absolute inset-0">
-              <Image 
-                src="https://picsum.photos/seed/wedding_cover/1080/1920"
-                alt="Cover Background"
-                fill
-                className="object-cover grayscale brightness-50"
-                priority
-              />
-            </div>
             <div className="relative z-10 w-full max-w-lg text-center px-8 flex flex-col items-center justify-center">
               <motion.div
                 initial={{ opacity: 0, letterSpacing: "1em" }}
@@ -170,28 +186,56 @@ export default function Home() {
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5, duration: 1 }}
-                className="mb-12"
+                className="mb-8"
               >
-                <h1 className="font-headline text-5xl md:text-8xl mb-4 italic leading-tight">
+                <h1 className="font-headline text-5xl md:text-7xl mb-4 italic leading-tight">
                   Nelson & Suni
                 </h1>
                 <div className="h-px w-12 bg-white/20 mx-auto" />
               </motion.div>
 
+              {/* Countdown Timer with Vertical Separators */}
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, duration: 1 }}
+                className="flex items-center gap-4 md:gap-8 mb-12"
+              >
+                <div className="text-center min-w-[60px]">
+                  <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.days}</span>
+                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Hari</span>
+                </div>
+                <div className="h-8 w-px bg-white/20" />
+                <div className="text-center min-w-[60px]">
+                  <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.hours}</span>
+                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Jam</span>
+                </div>
+                <div className="h-8 w-px bg-white/20" />
+                <div className="text-center min-w-[60px]">
+                  <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.minutes}</span>
+                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Menit</span>
+                </div>
+                <div className="h-8 w-px bg-white/20" />
+                <div className="text-center min-w-[60px]">
+                  <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.seconds}</span>
+                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Detik</span>
+                </div>
+              </motion.div>
+
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ delay: 1, duration: 1 }}
-                className="mb-16"
+                transition={{ delay: 1.2, duration: 1 }}
+                className="mb-12"
               >
-                <p className="font-body text-white/40 mb-3 text-xs italic tracking-widest uppercase">Eksklusif Untuk</p>
-                <h2 className="text-3xl md:text-5xl font-headline italic text-white/90">{guestName}</h2>
+                <p className="font-body text-white/40 mb-3 text-[10px] italic tracking-widest uppercase">Eksklusif Untuk</p>
+                <h2 className="text-2xl md:text-4xl font-headline italic text-white/90">{guestName}</h2>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.2, duration: 0.8 }}
+                transition={{ delay: 1.4, duration: 0.8 }}
               >
                 <Button 
                   onClick={handleOpenInvitation}
@@ -219,12 +263,12 @@ export default function Home() {
             <motion.p variants={fadeInUp} className="text-white/50 uppercase tracking-[0.5em] text-[10px] mb-6 font-body">
               The Wedding Of
             </motion.p>
-            <motion.h1 variants={fadeInUp} className="text-6xl md:text-8xl mb-8 font-headline leading-tight italic">
+            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl mb-8 font-headline leading-tight italic">
               Nelson & Suni
             </motion.h1>
             <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4">
               <div className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-                <span className="text-lg md:text-xl tracking-[0.4em] font-body text-white/80">24 . 12 . 2025</span>
+                <span className="text-lg tracking-[0.4em] font-body text-white/80">24 . 12 . 2025</span>
               </div>
             </motion.div>
           </motion.div>
@@ -235,37 +279,37 @@ export default function Home() {
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-16">
             <div className="text-center">
               <motion.h2 variants={fadeInUp} className="text-4xl font-headline italic mb-4">Mempelai</motion.h2>
-              <motion.p variants={fadeInUp} className="text-white/40 text-xs font-body italic tracking-wide max-w-[250px] mx-auto">
+              <motion.p variants={fadeInUp} className="text-white/40 text-[10px] font-body italic tracking-wide max-w-[250px] mx-auto leading-relaxed">
                 "Maka jadilah mereka satu daging, karena kasih adalah pengikat yang sempurna."
               </motion.p>
             </div>
 
             <div className="grid gap-16 md:grid-cols-2 md:gap-8">
               <motion.div variants={fadeInUp} className="flex flex-col items-center text-center">
-                <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full p-1.5 border border-white/10 mb-6 group">
+                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full p-1 border border-white/10 mb-6 group">
                   <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
                     <img src="https://picsum.photos/seed/groom/600/600" alt="Groom" className="w-full h-full object-cover" />
                   </div>
                   <div className="absolute inset-0 rounded-full border border-white/20 animate-pulse" />
                 </div>
-                <h3 className="text-3xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
+                <h3 className="text-2xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
                 <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putra dari Bpk. Fulan & Ibu Fulanah</p>
-                <Button variant="outline" size="icon" className="rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-95 transition-all">
-                  <Instagram className="w-4 h-4" />
+                <Button variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
+                  <Instagram className="w-3.5 h-3.5" />
                 </Button>
               </motion.div>
 
               <motion.div variants={fadeInUp} className="flex flex-col items-center text-center">
-                <div className="relative w-48 h-48 md:w-56 md:h-56 rounded-full p-1.5 border border-white/10 mb-6 group">
+                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full p-1 border border-white/10 mb-6 group">
                   <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
                     <img src="https://picsum.photos/seed/bride/600/600" alt="Bride" className="w-full h-full object-cover" />
                   </div>
                   <div className="absolute inset-0 rounded-full border border-white/20 animate-pulse delay-75" />
                 </div>
-                <h3 className="text-3xl font-headline italic mb-2">Suni Manik</h3>
+                <h3 className="text-2xl font-headline italic mb-2">Suni Manik</h3>
                 <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putri dari Bpk. Polan & Ibu Polanah</p>
-                <Button variant="outline" size="icon" className="rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-95 transition-all">
-                  <Instagram className="w-4 h-4" />
+                <Button variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
+                  <Instagram className="w-3.5 h-3.5" />
                 </Button>
               </motion.div>
             </div>
@@ -276,7 +320,7 @@ export default function Home() {
         <WeddingSection id="story" bgImageId="story-bg">
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-12">
             <motion.div variants={fadeInUp} className="text-center mb-4">
-              <History className="w-8 h-8 mx-auto mb-6 text-white/30" />
+              <History className="w-6 h-6 mx-auto mb-6 text-white/30" />
               <h2 className="text-4xl font-headline italic">Kisah Kami</h2>
             </motion.div>
             
@@ -284,15 +328,15 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="relative">
                 <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
                 <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2020</span>
-                <h3 className="text-2xl font-headline italic mb-2">Pertemuan Pertama</h3>
-                <p className="text-white/60 text-sm leading-relaxed font-body">Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat secangkir kopi dan percakapan sederhana yang tak berujung.</p>
+                <h3 className="text-xl font-headline italic mb-2">Pertemuan Pertama</h3>
+                <p className="text-white/60 text-xs leading-relaxed font-body">Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat secangkir kopi dan percakapan sederhana yang tak berujung.</p>
               </motion.div>
               
               <motion.div variants={fadeInUp} className="relative">
                 <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white/40 border border-white/20" />
                 <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2023</span>
-                <h3 className="text-2xl font-headline italic mb-2">Tumbuh Bersama</h3>
-                <p className="text-white/60 text-sm leading-relaxed font-body">Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain.</p>
+                <h3 className="text-xl font-headline italic mb-2">Tumbuh Bersama</h3>
+                <p className="text-white/60 text-xs leading-relaxed font-body">Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain.</p>
               </motion.div>
             </div>
           </motion.div>
@@ -302,23 +346,23 @@ export default function Home() {
         <WeddingSection id="event" bgImageId="event-bg">
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-8 text-center">
             <motion.div variants={fadeInUp} className="mb-4">
-              <Heart className="w-8 h-8 mx-auto text-white/30 mb-6" />
+              <Heart className="w-6 h-6 mx-auto text-white/30 mb-6" />
               <h2 className="text-4xl font-headline italic">Acara Penting</h2>
             </motion.div>
 
             <motion.div variants={fadeInUp}>
-              <Card className="bg-glass rounded-[2rem] overflow-hidden">
-                <CardContent className="p-10 space-y-10">
+              <Card className="bg-glass rounded-[2rem] overflow-hidden border-white/10">
+                <CardContent className="p-8 space-y-10">
                   <div className="space-y-4">
-                    <h3 className="text-2xl font-headline italic text-white/90">Pemberkatan</h3>
-                    <div className="space-y-3 text-white/60 text-sm">
+                    <h3 className="text-xl font-headline italic text-white/90">Pemberkatan</h3>
+                    <div className="space-y-3 text-white/60 text-[11px] font-body">
                       <div className="flex items-center justify-center gap-3">
-                        <Clock className="w-4 h-4" />
-                        <span className="tracking-wide">09.00 - 11.00 WIB</span>
+                        <Clock className="w-3.5 h-3.5" />
+                        <span className="tracking-widest uppercase">09.00 - 11.00 WIB</span>
                       </div>
                       <div className="flex items-center justify-center gap-3">
-                        <Calendar className="w-4 h-4" />
-                        <span className="tracking-wide">Minggu, 24 Desember 2025</span>
+                        <Calendar className="w-3.5 h-3.5" />
+                        <span className="tracking-widest uppercase">Minggu, 24 Desember 2025</span>
                       </div>
                     </div>
                   </div>
@@ -326,24 +370,24 @@ export default function Home() {
                   <div className="h-px bg-white/10 w-1/2 mx-auto" />
 
                   <div className="space-y-4">
-                    <h3 className="text-2xl font-headline italic text-white/90">Resepsi</h3>
-                    <div className="space-y-3 text-white/60 text-sm">
+                    <h3 className="text-xl font-headline italic text-white/90">Resepsi</h3>
+                    <div className="space-y-3 text-white/60 text-[11px] font-body">
                       <div className="flex items-center justify-center gap-3">
-                        <Clock className="w-4 h-4" />
-                        <span className="tracking-wide">12.00 - Selesai</span>
+                        <Clock className="w-3.5 h-3.5" />
+                        <span className="tracking-widest uppercase">12.00 - Selesai</span>
                       </div>
                       <div className="flex items-center justify-center gap-3">
-                        <MapPin className="w-4 h-4" />
-                        <span className="tracking-wide">Grand Ballroom, Jakarta</span>
+                        <MapPin className="w-3.5 h-3.5" />
+                        <span className="tracking-widest uppercase">Grand Ballroom, Jakarta</span>
                       </div>
                     </div>
                   </div>
 
                   <Button 
                     onClick={() => setIsLocationOpen(true)}
-                    className="w-full bg-white text-black hover:bg-white/90 font-bold tracking-[0.2em] h-14 rounded-2xl active:scale-95 transition-all shadow-xl"
+                    className="w-full bg-white text-black hover:bg-white/90 font-bold tracking-[0.2em] h-14 rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
                   >
-                    PETUNJUK LOKASI <MapPin className="ml-2 w-4 h-4" />
+                    PETUNJUK LOKASI <MapPin className="ml-2 w-3.5 h-3.5" />
                   </Button>
                 </CardContent>
               </Card>
@@ -358,10 +402,10 @@ export default function Home() {
               Galeri
             </motion.h2>
             
-            <div className="flex flex-col lg:flex-row gap-10 items-center justify-center">
+            <div className="flex flex-col lg:flex-row gap-8 items-center justify-center">
               <motion.div 
                 variants={fadeInUp}
-                className="relative aspect-[4/5] w-full max-w-[340px] md:max-w-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 group cursor-pointer"
+                className="relative aspect-[4/5] w-full max-w-[300px] md:max-w-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 group cursor-pointer"
                 onClick={() => setSelectedImage(galleryImages[activeGalleryIndex].url)}
               >
                 <AnimatePresence mode="wait">
@@ -377,18 +421,18 @@ export default function Home() {
                   />
                 </AnimatePresence>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                <div className="absolute bottom-6 right-6 p-4 rounded-full bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
-                  <Maximize2 className="w-5 h-5 text-white" />
+                <div className="absolute bottom-6 right-6 p-3 rounded-full bg-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Maximize2 className="w-4 h-4 text-white" />
                 </div>
               </motion.div>
 
-              <motion.div variants={fadeInUp} className="flex lg:flex-col gap-4 overflow-x-auto no-scrollbar py-4 px-2">
+              <motion.div variants={fadeInUp} className="flex lg:flex-col gap-3 overflow-x-auto no-scrollbar py-4 px-2">
                 {galleryImages.map((img, idx) => (
                   <button
                     key={img.id}
                     onClick={() => setActiveGalleryIndex(idx)}
                     className={cn(
-                      "relative flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-2xl overflow-hidden border-2 transition-all duration-500 active:scale-95",
+                      "relative flex-shrink-0 w-14 h-14 md:w-20 md:h-20 rounded-2xl overflow-hidden border-2 transition-all duration-500 active:scale-90",
                       activeGalleryIndex === idx 
                         ? "border-white scale-110 shadow-lg" 
                         : "border-transparent opacity-40 grayscale"
@@ -406,44 +450,44 @@ export default function Home() {
         <WeddingSection id="gift" bgImageId="gift-bg">
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10">
             <motion.div variants={fadeInUp}>
-              <Gift className="w-10 h-10 mx-auto text-white/30" />
+              <Gift className="w-8 h-8 mx-auto text-white/30" />
               <h2 className="text-4xl font-headline italic mt-6 mb-4">Hadiah Cinta</h2>
-              <p className="text-white/50 text-xs font-body tracking-wide leading-relaxed">Kehadiran Anda adalah kado terindah bagi kami. Namun jika Anda ingin memberikan tanda kasih, silakan melalui saluran berikut:</p>
+              <p className="text-white/50 text-[10px] font-body tracking-wide leading-relaxed px-4">Kehadiran Anda adalah kado terindah bagi kami. Namun jika Anda ingin memberikan tanda kasih, silakan melalui saluran berikut:</p>
             </motion.div>
             
             <div className="grid gap-6">
               <motion.div variants={fadeInUp}>
-                <div className="p-8 rounded-[2rem] bg-glass">
-                  <p className="font-bold text-[10px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Central Asia</p>
+                <div className="p-8 rounded-[2rem] bg-glass border-white/10">
+                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Central Asia</p>
                   <div className="flex items-center justify-between gap-4 mb-4">
-                    <p className="text-2xl md:text-3xl font-mono tracking-tighter">123 456 7890</p>
+                    <p className="text-xl md:text-3xl font-mono tracking-tighter">123 456 7890</p>
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-all active:scale-90"
+                      className="w-10 h-10 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-all active:scale-90"
                       onClick={() => handleCopy("123 456 7890", "bca")}
                     >
                       {copiedId === "bca" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
-                  <p className="text-white/40 text-[10px] uppercase tracking-widest font-body">a.n Nelson Mandela Sianturi</p>
+                  <p className="text-white/40 text-[9px] uppercase tracking-widest font-body">a.n Nelson Mandela Sianturi</p>
                 </div>
               </motion.div>
               <motion.div variants={fadeInUp}>
-                <div className="p-8 rounded-[2rem] bg-glass">
-                  <p className="font-bold text-[10px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Mandiri</p>
+                <div className="p-8 rounded-[2rem] bg-glass border-white/10">
+                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Mandiri</p>
                   <div className="flex items-center justify-between gap-4 mb-4">
-                    <p className="text-2xl md:text-3xl font-mono tracking-tighter">098 765 4321</p>
+                    <p className="text-xl md:text-3xl font-mono tracking-tighter">098 765 4321</p>
                     <Button 
                       variant="ghost" 
                       size="icon" 
-                      className="rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-all active:scale-90"
+                      className="w-10 h-10 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-all active:scale-90"
                       onClick={() => handleCopy("098 765 4321", "mandiri")}
                     >
                       {copiedId === "mandiri" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
-                  <p className="text-white/40 text-[10px] uppercase tracking-widest font-body">a.n Suni Manik</p>
+                  <p className="text-white/40 text-[9px] uppercase tracking-widest font-body">a.n Suni Manik</p>
                 </div>
               </motion.div>
             </div>
@@ -455,17 +499,17 @@ export default function Home() {
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10">
             <motion.div variants={fadeInUp}>
               <h2 className="text-4xl font-headline italic mb-4">Reservasi</h2>
-              <p className="text-white/50 text-xs font-body mb-6 tracking-wide">Mohon konfirmasi kehadiran Anda untuk menyempurnakan hari bahagia kami.</p>
+              <p className="text-white/50 text-[10px] font-body mb-6 tracking-wide px-4">Mohon konfirmasi kehadiran Anda untuk menyempurnakan hari bahagia kami.</p>
             </motion.div>
             
-            <motion.div variants={fadeInUp} className="space-y-6 text-left bg-glass p-8 rounded-[2rem]">
-              <Input placeholder="Nama Lengkap" className="bg-transparent border-white/10 h-14 rounded-xl text-white focus:ring-1 focus:ring-white/40 font-body" />
+            <motion.div variants={fadeInUp} className="space-y-6 text-left bg-glass p-8 rounded-[2rem] border-white/10">
+              <Input placeholder="Nama Lengkap" className="bg-transparent border-white/10 h-14 rounded-xl text-white focus:ring-1 focus:ring-white/40 font-body text-xs" />
               <div className="flex gap-4">
-                <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body">Hadir</Button>
-                <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body">Absen</Button>
+                <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body text-xs">Hadir</Button>
+                <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body text-xs">Absen</Button>
               </div>
-              <Textarea placeholder="Pesan & Harapan..." className="bg-transparent border-white/10 min-h-[120px] rounded-xl focus:ring-1 focus:ring-white/40 font-body" />
-              <Button className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl">
+              <Textarea placeholder="Pesan & Harapan..." className="bg-transparent border-white/10 min-h-[120px] rounded-xl focus:ring-1 focus:ring-white/40 font-body text-xs" />
+              <Button className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl text-xs">
                 KIRIM KONFIRMASI <Send className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
@@ -473,12 +517,12 @@ export default function Home() {
         </WeddingSection>
 
         {/* Floating Music Toggle */}
-        <div className="fixed top-8 right-8 z-50">
+        <div className="fixed top-6 right-6 z-50">
           <button 
             onClick={() => setIsMuted(!isMuted)}
-            className="w-12 h-12 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/80 active:scale-90 transition-all hover:bg-black/60 shadow-2xl"
+            className="w-10 h-10 rounded-full bg-black/40 backdrop-blur-xl border border-white/10 flex items-center justify-center text-white/80 active:scale-90 transition-all hover:bg-black/60 shadow-2xl"
           >
-            {isMuted ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
           </button>
         </div>
 
