@@ -342,16 +342,19 @@ export default function Home() {
               <div className="mt-4 h-px w-16 bg-gradient-to-r from-transparent via-white/30 to-transparent mx-auto" />
             </motion.div>
             
-            <div className="space-y-16 relative pl-10 before:absolute before:left-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-gradient-to-b before:from-white/5 before:via-white/20 before:to-white/5">
+            <div className="space-y-16 relative pl-10">
+              {/* Timeline Line - Positioned at 20px from left (center of pl-10) */}
+              <div className="absolute left-[20px] top-2 bottom-2 w-px bg-gradient-to-b from-white/5 via-white/20 to-white/5 -translate-x-1/2" />
+              
               {[
                 { year: "2020", title: "Pertemuan Pertama", desc: "Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat percakapan sederhana yang tak berujung. Sebuah awal yang tak disangka namun sangat berharga." },
                 { year: "2023", title: "Komitmen Bersama", desc: "Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain. Kami berjanji untuk saling menguatkan dalam setiap langkah." },
                 { year: "2025", title: "Lembaran Baru", desc: "Kini, kami bersiap melangkah ke gerbang pernikahan, mengikat janji suci di hadapan Tuhan dan keluarga tercinta untuk selamanya." }
               ].map((item, index) => (
                 <motion.div key={index} variants={fadeInUp} className="relative group">
-                  {/* Marker */}
-                  <div className="absolute -left-[45px] top-1.5 flex items-center justify-center">
-                    <div className="w-2.5 h-2.5 rounded-full bg-white group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                  {/* Marker - Centered exactly on the line */}
+                  <div className="absolute left-[-20px] top-1.5 -translate-x-1/2 flex items-center justify-center w-0 h-0">
+                    <div className="w-2.5 h-2.5 rounded-full bg-white group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(255,255,255,0.8)] relative z-10" />
                     <div className="absolute w-6 h-6 rounded-full border border-white/10 group-hover:border-white/40 transition-colors animate-pulse" />
                   </div>
                   
