@@ -27,13 +27,11 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
             src={bgImage.imageUrl}
             alt={bgImage.description}
             fill
-            className="object-cover transition-transform duration-[2000ms] hover:scale-105"
+            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.6] blur-[2px] scale-105"
             priority
             data-ai-hint={bgImage.imageHint}
           />
         )}
-        {/* Lapisan Hitam Transparan Tipis untuk membantu keterbacaan teks jika diperlukan */}
-        <div className="absolute inset-0 bg-black/10" />
       </div>
 
       {/* Content Area */}
