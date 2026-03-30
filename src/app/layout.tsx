@@ -1,10 +1,9 @@
-
 import type {Metadata} from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Cinta Abadi - Wedding Invitation',
-  description: 'The eternal love story of our wedding day.',
+  title: 'Nelson & Suni - Wedding Invitation',
+  description: 'The eternal love story of Nelson Mandela Sianturi and Suni Manik.',
 };
 
 export default function RootLayout({

@@ -133,7 +133,7 @@ export default function Home() {
                 className="mb-12"
               >
                 <h1 className="font-headline text-5xl md:text-8xl mb-4 italic leading-tight">
-                  Cinta & Abadi
+                  Nelson & Suni
                 </h1>
                 <div className="h-px w-12 bg-white/20 mx-auto" />
               </motion.div>
@@ -180,7 +180,7 @@ export default function Home() {
               The Wedding Of
             </motion.p>
             <motion.h1 variants={fadeInUp} className="text-6xl md:text-8xl mb-8 font-headline leading-tight italic">
-              Cinta & Abadi
+              Nelson & Suni
             </motion.h1>
             <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4">
               <div className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
@@ -208,7 +208,7 @@ export default function Home() {
                   </div>
                   <div className="absolute inset-0 rounded-full border border-white/20 animate-pulse" />
                 </div>
-                <h3 className="text-3xl font-headline italic mb-2">Abadi Prasetya</h3>
+                <h3 className="text-3xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
                 <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putra dari Bpk. Fulan & Ibu Fulanah</p>
                 <Button variant="outline" size="icon" className="rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-95 transition-all">
                   <Instagram className="w-4 h-4" />
@@ -222,7 +222,7 @@ export default function Home() {
                   </div>
                   <div className="absolute inset-0 rounded-full border border-white/20 animate-pulse delay-75" />
                 </div>
-                <h3 className="text-3xl font-headline italic mb-2">Cinta Lestari</h3>
+                <h3 className="text-3xl font-headline italic mb-2">Suni Manik</h3>
                 <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putri dari Bpk. Polan & Ibu Polanah</p>
                 <Button variant="outline" size="icon" className="rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-95 transition-all">
                   <Instagram className="w-4 h-4" />
@@ -386,7 +386,7 @@ export default function Home() {
                       {copiedId === "bca" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
-                  <p className="text-white/40 text-[10px] uppercase tracking-widest font-body">a.n Abadi Prasetya</p>
+                  <p className="text-white/40 text-[10px] uppercase tracking-widest font-body">a.n Nelson Mandela Sianturi</p>
                 </div>
               </motion.div>
               <motion.div variants={fadeInUp}>
@@ -403,7 +403,7 @@ export default function Home() {
                       {copiedId === "mandiri" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
-                  <p className="text-white/40 text-[10px] uppercase tracking-widest font-body">a.n Cinta Lestari</p>
+                  <p className="text-white/40 text-[10px] uppercase tracking-widest font-body">a.n Suni Manik</p>
                 </div>
               </motion.div>
             </div>
