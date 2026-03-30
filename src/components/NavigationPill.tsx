@@ -19,7 +19,8 @@ export function NavigationPill() {
   React.useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "-50% 0px -50% 0px",
+      // Deteksi aktif ketika seksi berada di tengah layar
+      rootMargin: "-45% 0px -45% 0px",
       threshold: 0,
     }
 
@@ -45,7 +46,6 @@ export function NavigationPill() {
     const element = document.getElementById(id)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
-      // Active tab will be updated by the observer
     }
   }
 
