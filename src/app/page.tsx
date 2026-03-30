@@ -75,8 +75,8 @@ export default function Home() {
     visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: "easeOut" } }
   }
   const bgSoftFade = {
-    hidden: { opacity: 0, filter: "brightness(0)" },
-    visible: { opacity: 1, filter: "brightness(1)", transition: { duration: 2.2 } }
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 2.2 } }
   }
 
   // Countdown Logic
@@ -106,10 +106,12 @@ export default function Home() {
   }, [])
 
   const galleryImages = [
-    { id: 1, url: "https://picsum.photos/seed/gallery1/800/1200" },
-    { id: 2, url: "https://picsum.photos/seed/gallery2/1200/800" },
-    { id: 3, url: "https://picsum.photos/seed/gallery3/800/1200" },
-    { id: 4, url: "https://picsum.photos/seed/gallery4/1200/800" },
+    { id: 1, url: "/Background/Page_1.png" },
+    { id: 2, url: "/Background/Page_2.png" },
+    { id: 3, url: "/Background/Page_3.png" },
+    { id: 4, url: "/Background/Page_4.png" },
+    { id: 5, url: "/Background/Page_6.png" },
+    { id: 6, url: "/Background/Page_7.png" },
   ]
 
   useEffect(() => {
@@ -273,7 +275,7 @@ export default function Home() {
         "snap-y snap-mandatory h-screen overflow-y-scroll no-scrollbar scroll-smooth",
         !isOpen && "hidden"
       )}>
-        {/* 1. Welcome Section - Zoom Out Effect */}
+        {/* 1. Welcome Section */}
         <WeddingSection id="welcome" bgImageId="welcome-bg" bgVariants={bgZoomOut}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center">
             <motion.p variants={fadeInUp} className="text-white/50 uppercase tracking-[0.5em] text-[10px] mb-6 font-body">
@@ -290,7 +292,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 2. Couple Section - Slide from Right */}
+        {/* 2. Couple Section */}
         <WeddingSection id="couple" bgImageId="couple-bg" bgVariants={bgSlideRight}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-16">
             <div className="text-center">
@@ -304,7 +306,7 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="flex flex-col items-center text-center">
                 <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full p-1 border border-white/10 mb-6 group">
                   <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                    <img src="https://picsum.photos/seed/groom/600/600" alt="Groom" className="w-full h-full object-cover" />
+                    <img src="https://picsum.photos/seed/groom/600/600" alt="Nelson" className="w-full h-full object-cover" />
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
@@ -317,7 +319,7 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="flex flex-col items-center text-center">
                 <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full p-1 border border-white/10 mb-6 group">
                   <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                    <img src="https://picsum.photos/seed/bride/600/600" alt="Bride" className="w-full h-full object-cover" />
+                    <img src="https://picsum.photos/seed/bride/600/600" alt="Suni" className="w-full h-full object-cover" />
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2">Suni Manik</h3>
@@ -330,7 +332,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 3. Story Timeline - Redesigned Aesthetic */}
+        {/* 3. Story Timeline */}
         <WeddingSection id="story" bgImageId="story-bg" bgVariants={bgSlideUp}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-16">
             <motion.div variants={fadeInUp} className="text-center">
@@ -343,7 +345,6 @@ export default function Home() {
             </motion.div>
             
             <div className="space-y-16 relative pl-10">
-              {/* Timeline Line - Positioned at 20px from left (center of pl-10) */}
               <div className="absolute left-[20px] top-2 bottom-2 w-px bg-gradient-to-b from-white/5 via-white/20 to-white/5 -translate-x-1/2" />
               
               {[
@@ -352,13 +353,11 @@ export default function Home() {
                 { year: "2025", title: "Lembaran Baru", desc: "Kini, kami bersiap melangkah ke gerbang pernikahan, mengikat janji suci di hadapan Tuhan dan keluarga tercinta untuk selamanya." }
               ].map((item, index) => (
                 <motion.div key={index} variants={fadeInUp} className="relative group">
-                  {/* Marker - Centered exactly on the line */}
                   <div className="absolute left-[-20px] top-1.5 -translate-x-1/2 flex items-center justify-center w-0 h-0">
                     <div className="w-2.5 h-2.5 rounded-full bg-white group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(255,255,255,0.8)] relative z-10" />
                     <div className="absolute w-6 h-6 rounded-full border border-white/10 group-hover:border-white/40 transition-colors animate-pulse" />
                   </div>
                   
-                  {/* Content */}
                   <div className="space-y-3">
                     <span className="text-[11px] font-bold tracking-[0.4em] text-white/40 uppercase font-body group-hover:text-white/80 transition-colors">
                       {item.year}
@@ -374,7 +373,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 4. Event Section - Slide from Left */}
+        {/* 4. Event Section */}
         <WeddingSection id="event" bgImageId="event-bg" bgVariants={bgSlideLeft}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-8 text-center">
             <motion.div variants={fadeInUp} className="mb-4">
@@ -427,7 +426,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 5. Photo Gallery - Zoom In Effect */}
+        {/* 5. Photo Gallery */}
         <WeddingSection id="gallery" bgImageId="gallery-bg" isFull bgVariants={bgZoomIn}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10 w-full max-w-5xl px-6">
             <motion.h2 variants={fadeInUp} className="text-5xl md:text-7xl font-headline italic">
@@ -478,7 +477,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 6. Gift Section - Soft Fade In */}
+        {/* 6. Gift Section */}
         <WeddingSection id="gift" bgImageId="gift-bg" bgVariants={bgSoftFade}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10">
             <motion.div variants={fadeInUp}>
@@ -526,7 +525,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 7. RSVP Section - Gentle Scale Reveal */}
+        {/* 7. RSVP Section */}
         <WeddingSection id="rsvp" bgImageId="rsvp-bg" bgVariants={bgZoomOut}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10">
             <motion.div variants={fadeInUp}>
