@@ -20,31 +20,27 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
 
   return (
     <section id={id} className="relative h-screen w-full flex flex-col justify-end overflow-hidden snap-start bg-black">
-      {/* Background Layer with Parallax Effect Hint */}
+      {/* Background Layer */}
       <div className="absolute inset-0 z-0">
         {bgImage && (
           <Image
             src={bgImage.imageUrl}
             alt={bgImage.description}
             fill
-            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.4]"
+            className="object-cover transition-transform duration-[2000ms] hover:scale-105"
             priority
             data-ai-hint={bgImage.imageHint}
           />
         )}
-        {/* Soft Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black" />
-        <div className="absolute inset-0 bg-black/20" />
+        {/* Lapisan Hitam Transparan Tipis untuk membantu keterbacaan teks jika diperlukan */}
+        <div className="absolute inset-0 bg-black/10" />
       </div>
 
-      {/* Content Area with Double Fade Effect */}
+      {/* Content Area */}
       <div className={cn(
         "relative z-10 w-full flex flex-col",
         isFull ? "h-full justify-center" : "h-full justify-end"
       )}>
-        {/* Top Fade Gradient for Smoothness */}
-        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent pointer-events-none z-20" />
-        
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -61,8 +57,8 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
           </div>
         </motion.div>
 
-        {/* Bottom Fade Gradient to anchor the NavigationPill visually */}
-        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none z-20" />}
+        {/* Bottom Fade Gradient hanya untuk area navigasi agar tetap terbaca */}
+        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-20" />}
       </div>
     </section>
   )
