@@ -414,6 +414,15 @@ export default function Home() {
               <Card className="bg-glass rounded-[2rem] overflow-hidden border-white/10">
                 <CardContent className="p-8 space-y-10">
                   <div className="space-y-4">
+                    <h3 className="text-xl font-headline italic text-white/90">Kanonisasi</h3>
+                    <p className="text-white/50 text-[11px] font-body italic tracking-wide">
+                      Peneguhan janji suci dan penyatuan kasih di hadapan Tuhan dan Jemaat.
+                    </p>
+                  </div>
+
+                  <div className="h-px bg-white/10 w-1/2 mx-auto" />
+
+                  <div className="space-y-4">
                     <h3 className="text-xl font-headline italic text-white/90">Pemberkatan</h3>
                     <div className="space-y-3 text-white/60 text-[11px] font-body">
                       <div className="flex items-center justify-center gap-3">
@@ -430,7 +439,7 @@ export default function Home() {
                   <div className="h-px bg-white/10 w-1/2 mx-auto" />
 
                   <div className="space-y-4">
-                    <h3 className="text-xl font-headline italic text-white/90">Resepsi</h3>
+                    <h3 className="text-xl font-headline italic text-white/90">Acara Adat</h3>
                     <div className="space-y-3 text-white/60 text-[11px] font-body">
                       <div className="flex items-center justify-center gap-3">
                         <Clock className="w-3.5 h-3.5" />
@@ -678,7 +687,7 @@ export default function Home() {
             
             <AccordionItem value="resepsi" className="border-white/10">
               <AccordionTrigger className="font-headline italic text-lg hover:no-underline py-4 text-white/90">
-                Resepsi
+                Acara Adat
               </AccordionTrigger>
               <AccordionContent className="space-y-6 pt-2 pb-6">
                 <div className="flex gap-3 items-start">
