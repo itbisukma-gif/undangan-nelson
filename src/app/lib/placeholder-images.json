@@ -1,0 +1,52 @@
+{
+  "placeholderImages": [
+    {
+      "id": "cover-bg",
+      "description": "Elegant wedding decoration",
+      "imageUrl": "https://picsum.photos/seed/wedding_cover/1080/1920",
+      "imageHint": "wedding decoration"
+    },
+    {
+      "id": "welcome-bg",
+      "description": "The Wedding Of Nelson & Suni",
+      "imageUrl": "/Background/Page_1.png",
+      "imageHint": "wedding background"
+    },
+    {
+      "id": "couple-bg",
+      "description": "Halaman Mempelai Background",
+      "imageUrl": "/Background/Page_2.png",
+      "imageHint": "wedding couple"
+    },
+    {
+      "id": "event-bg",
+      "description": "Acara Penting Background",
+      "imageUrl": "/Background/Page_4.png",
+      "imageHint": "wedding event"
+    },
+    {
+      "id": "story-bg",
+      "description": "Kisah Kami Background",
+      "imageUrl": "/Background/Page_3.png",
+      "imageHint": "wedding story"
+    },
+    {
+      "id": "rsvp-bg",
+      "description": "Wedding rings on a table",
+      "imageUrl": "https://picsum.photos/seed/wedding3/1080/1920",
+      "imageHint": "wedding rings"
+    },
+    {
+      "id": "gallery-bg",
+      "description": "Happy couple laughing",
+      "imageUrl": "https://picsum.photos/seed/wedding4/1080/1920",
+      "imageHint": "happy couple"
+    },
+    {
+      "id": "gift-bg",
+      "description": "Hadiah Cinta Background",
+      "imageUrl": "/Background/Page_6.png",
+      "imageHint": "wedding gift"
+    }
+  ]
+}
