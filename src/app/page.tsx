@@ -461,7 +461,7 @@ export default function Home() {
 
       {/* Location Modal */}
       <Dialog open={isLocationOpen} onOpenChange={setIsLocationOpen}>
-        <DialogContent className="bg-black/95 border border-white/10 text-white rounded-[2rem] max-w-sm w-[90%] mx-auto p-6 shadow-2xl backdrop-blur-2xl">
+        <DialogContent className="bg-black/95 border border-white/10 text-white rounded-[2rem] max-w-md w-[95%] mx-auto p-6 shadow-2xl backdrop-blur-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
           <DialogHeader className="mb-4">
             <DialogTitle className="font-headline italic text-2xl text-center">Petunjuk Lokasi</DialogTitle>
           </DialogHeader>
@@ -471,13 +471,28 @@ export default function Home() {
               <AccordionTrigger className="font-headline italic text-lg hover:no-underline py-4 text-white/90">
                 Pemberkatan
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pt-2 pb-6">
+              <AccordionContent className="space-y-6 pt-2 pb-6">
                 <div className="flex gap-3 items-start">
                   <MapPin className="w-5 h-5 text-white/40 shrink-0 mt-0.5" />
                   <p className="text-white/60 text-sm leading-relaxed font-body">
                     Gereja Katedral Jakarta, Jl. Katedral No.7, Ps. Baru, Sawah Besar, Jakarta Pusat.
                   </p>
                 </div>
+                
+                {/* Map Preview */}
+                <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.6974128509826!2d106.8305!3d-6.169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5cfea21e05d%3A0x272b1448b1d9607b!2sGereja%20Katedral%20Jakarta!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid"
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Map Pemberkatan"
+                  />
+                </div>
+
                 <Button 
                   asChild
                   className="w-full h-12 bg-white text-black hover:bg-white/90 font-bold tracking-[0.1em] rounded-xl transition-all shadow-lg"
@@ -493,13 +508,28 @@ export default function Home() {
               <AccordionTrigger className="font-headline italic text-lg hover:no-underline py-4 text-white/90">
                 Resepsi
               </AccordionTrigger>
-              <AccordionContent className="space-y-4 pt-2 pb-6">
+              <AccordionContent className="space-y-6 pt-2 pb-6">
                 <div className="flex gap-3 items-start">
                   <MapPin className="w-5 h-5 text-white/40 shrink-0 mt-0.5" />
                   <p className="text-white/60 text-sm leading-relaxed font-body">
                     Grand Ballroom, Hotel Indonesia Kempinski, Jl. M.H. Thamrin No.1, Jakarta Pusat.
                   </p>
                 </div>
+
+                {/* Map Preview */}
+                <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/5">
+                  <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521255857245!2d106.8214!3d-6.1947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f417688229b1%3A0xc6214f48b0a178e2!2sHotel%20Indonesia%20Kempinski%20Jakarta!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid"
+                    width="100%" 
+                    height="100%" 
+                    style={{ border: 0 }} 
+                    allowFullScreen 
+                    loading="lazy" 
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Map Resepsi"
+                  />
+                </div>
+
                 <Button 
                   asChild
                   className="w-full h-12 bg-white text-black hover:bg-white/90 font-bold tracking-[0.1em] rounded-xl transition-all shadow-lg"
