@@ -12,9 +12,10 @@ interface WeddingSectionProps {
   bgImageId: string
   children: React.ReactNode
   className?: string
+  isFull?: boolean
 }
 
-export function WeddingSection({ id, bgImageId, children, className }: WeddingSectionProps) {
+export function WeddingSection({ id, bgImageId, children, className, isFull = false }: WeddingSectionProps) {
   const bgImage = PlaceHolderImages.find((img) => img.id === bgImageId)
 
   return (
@@ -37,8 +38,11 @@ export function WeddingSection({ id, bgImageId, children, className }: WeddingSe
       </div>
 
       {/* Content Area with Double Fade Effect */}
-      <div className="relative z-10 w-full h-full flex flex-col justify-end">
-        {/* Top Fade Gradient to prevent hard cuts when scrolling content */}
+      <div className={cn(
+        "relative z-10 w-full flex flex-col",
+        isFull ? "h-full justify-center" : "h-full justify-end"
+      )}>
+        {/* Top Fade Gradient */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black to-transparent pointer-events-none z-20" />
         
         <motion.div
@@ -47,17 +51,18 @@ export function WeddingSection({ id, bgImageId, children, className }: WeddingSe
           viewport={{ once: false, margin: "-50px" }}
           transition={{ duration: 1, ease: "easeOut" }}
           className={cn(
-            "relative w-full max-h-[70vh] overflow-y-auto no-scrollbar px-8 pt-20 pb-40 bg-gradient-to-t from-black via-black/90 to-transparent",
+            "relative w-full no-scrollbar px-8 pt-20 pb-40 bg-gradient-to-t from-black via-black/80 to-transparent",
+            isFull ? "h-full flex flex-col justify-center items-center pb-20" : "max-h-[70vh] overflow-y-auto",
             className
           )}
         >
-          <div className="max-w-md mx-auto space-y-8">
+          <div className={cn("mx-auto space-y-8", isFull ? "w-full max-w-4xl" : "max-w-md")}>
             {children}
           </div>
         </motion.div>
 
-        {/* Bottom Fade Gradient for consistent look */}
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />
+        {/* Bottom Fade Gradient */}
+        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />}
       </div>
     </section>
   )

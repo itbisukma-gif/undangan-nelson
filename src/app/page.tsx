@@ -44,10 +44,10 @@ export default function Home() {
   }, [])
 
   const galleryImages = [
-    { id: 1, url: "https://picsum.photos/seed/gallery1/800/800" },
-    { id: 2, url: "https://picsum.photos/seed/gallery2/800/800" },
-    { id: 3, url: "https://picsum.photos/seed/gallery3/800/800" },
-    { id: 4, url: "https://picsum.photos/seed/gallery4/800/800" },
+    { id: 1, url: "https://picsum.photos/seed/gallery1/800/1200" },
+    { id: 2, url: "https://picsum.photos/seed/gallery2/1200/800" },
+    { id: 3, url: "https://picsum.photos/seed/gallery3/800/1200" },
+    { id: 4, url: "https://picsum.photos/seed/gallery4/1200/800" },
   ]
 
   // Auto-play for Hero Gallery
@@ -332,81 +332,75 @@ export default function Home() {
           </div>
         </WeddingSection>
 
-        {/* 5. Photo Gallery - Updated with Hero & Selector */}
-        <WeddingSection id="gallery" bgImageId="gallery-bg">
-          <div className="text-center space-y-8">
+        {/* 5. Photo Gallery - Updated to Full Page */}
+        <WeddingSection id="gallery" bgImageId="gallery-bg" isFull>
+          <div className="text-center space-y-10 w-full px-4">
             <motion.h2 
               variants={textVariants} initial="hidden" whileInView="visible" custom={1}
-              className="text-3xl font-headline italic mb-2"
+              className="text-4xl md:text-5xl font-headline italic mb-4"
             >
               Galeri Foto
             </motion.h2>
             
-            {/* Hero Image Slider */}
-            <motion.div 
-              variants={textVariants} initial="hidden" whileInView="visible" custom={2}
-              className="relative aspect-[4/5] w-full max-w-sm mx-auto rounded-2xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer"
-              onClick={() => setSelectedImage(galleryImages[activeGalleryIndex].url)}
-            >
-              <AnimatePresence mode="wait">
-                <motion.img
-                  key={galleryImages[activeGalleryIndex].id}
-                  src={galleryImages[activeGalleryIndex].url}
-                  initial={{ opacity: 0, scale: 1.1 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.8, ease: "easeInOut" }}
-                  className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
-                  alt="Hero Gallery"
-                />
-              </AnimatePresence>
-              
-              {/* Overlay elements */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                <div className="bg-white/20 backdrop-blur-md rounded-full p-4 scale-75 group-hover:scale-100 transition-transform duration-500">
-                  <Maximize2 className="w-8 h-8 text-white" />
-                </div>
-              </div>
-
-              {/* Counter Indicator */}
-              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-black/40 backdrop-blur-md rounded-full text-[10px] tracking-[0.2em] font-bold text-white/80 border border-white/10">
-                {activeGalleryIndex + 1} / {galleryImages.length}
-              </div>
-            </motion.div>
-
-            {/* Selector / Thumbnails */}
-            <motion.div 
-              variants={textVariants} initial="hidden" whileInView="visible" custom={3}
-              className="flex justify-center gap-3 px-2 overflow-x-auto no-scrollbar"
-            >
-              {galleryImages.map((img, idx) => (
-                <button
-                  key={img.id}
-                  onClick={() => setActiveGalleryIndex(idx)}
-                  className={cn(
-                    "relative flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-500",
-                    activeGalleryIndex === idx 
-                      ? "border-white scale-110 shadow-lg shadow-white/10 z-10" 
-                      : "border-transparent opacity-40 hover:opacity-100"
-                  )}
-                >
-                  <img 
-                    src={img.url} 
-                    className={cn(
-                      "w-full h-full object-cover transition-all duration-500",
-                      activeGalleryIndex === idx ? "grayscale-0" : "grayscale"
-                    )} 
-                    alt={`Thumbnail ${idx}`} 
+            <div className="w-full flex flex-col md:flex-row gap-8 items-center justify-center">
+              {/* Hero Image Slider */}
+              <motion.div 
+                variants={textVariants} initial="hidden" whileInView="visible" custom={2}
+                className="relative aspect-[3/4] w-full max-w-lg rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 group cursor-pointer"
+                onClick={() => setSelectedImage(galleryImages[activeGalleryIndex].url)}
+              >
+                <AnimatePresence mode="wait">
+                  <motion.img
+                    key={galleryImages[activeGalleryIndex].id}
+                    src={galleryImages[activeGalleryIndex].url}
+                    initial={{ opacity: 0, scale: 1.1 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    transition={{ duration: 1, ease: "easeInOut" }}
+                    className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000"
+                    alt="Hero Gallery"
                   />
-                  {activeGalleryIndex === idx && (
-                    <motion.div 
-                      layoutId="gallery-active-thumb"
-                      className="absolute inset-0 bg-white/10"
+                </AnimatePresence>
+                
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                  <div className="bg-white/10 backdrop-blur-xl rounded-full p-6 scale-75 group-hover:scale-100 transition-transform duration-700">
+                    <Maximize2 className="w-10 h-10 text-white" />
+                  </div>
+                </div>
+
+                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-black/60 backdrop-blur-xl rounded-full text-xs tracking-[0.3em] font-bold text-white/90 border border-white/10">
+                  {activeGalleryIndex + 1} / {galleryImages.length}
+                </div>
+              </motion.div>
+
+              {/* Selector / Thumbnails - Side on desktop, bottom on mobile */}
+              <motion.div 
+                variants={textVariants} initial="hidden" whileInView="visible" custom={3}
+                className="flex md:flex-col justify-center gap-4 px-4 py-2 overflow-x-auto md:overflow-y-auto no-scrollbar"
+              >
+                {galleryImages.map((img, idx) => (
+                  <button
+                    key={img.id}
+                    onClick={() => setActiveGalleryIndex(idx)}
+                    className={cn(
+                      "relative flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border-2 transition-all duration-700",
+                      activeGalleryIndex === idx 
+                        ? "border-white scale-110 shadow-2xl z-10" 
+                        : "border-transparent opacity-30 hover:opacity-100"
+                    )}
+                  >
+                    <img 
+                      src={img.url} 
+                      className={cn(
+                        "w-full h-full object-cover transition-all duration-700",
+                        activeGalleryIndex === idx ? "grayscale-0" : "grayscale"
+                      )} 
+                      alt={`Thumbnail ${idx}`} 
                     />
-                  )}
-                </button>
-              ))}
-            </motion.div>
+                  </button>
+                ))}
+              </motion.div>
+            </div>
           </div>
         </WeddingSection>
 
@@ -481,12 +475,12 @@ export default function Home() {
 
       {/* Lightbox Dialog */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
-        <DialogContent className="max-w-3xl bg-black/90 border-white/10 p-0 overflow-hidden">
+        <DialogContent className="max-w-4xl bg-black/95 border-white/10 p-0 overflow-hidden shadow-2xl">
           <DialogHeader className="sr-only">
             <DialogTitle>View Photo</DialogTitle>
           </DialogHeader>
           {selectedImage && (
-            <div className="relative aspect-square w-full">
+            <div className="relative w-full h-[80vh]">
               <img 
                 src={selectedImage} 
                 alt="Enlarged gallery photo" 
