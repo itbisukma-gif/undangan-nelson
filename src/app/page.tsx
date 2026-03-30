@@ -447,7 +447,7 @@ export default function Home() {
                       </div>
                       <div className="flex items-center justify-center gap-3">
                         <MapPin className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">Grand Ballroom, Jakarta</span>
+                        <span className="tracking-widest uppercase">Kabupaten Tapanuli Utara</span>
                       </div>
                     </div>
                   </div>
@@ -657,13 +657,13 @@ export default function Home() {
                 <div className="flex gap-3 items-start">
                   <MapPin className="w-5 h-5 text-white/40 shrink-0 mt-0.5" />
                   <p className="text-white/60 text-sm leading-relaxed font-body">
-                    Gereja Katedral Jakarta, Jl. Katedral No.7, Ps. Baru, Sawah Besar, Jakarta Pusat.
+                    Gereja Katolik Garoga, Desa Lontung Jae I, Kec. Garoga, Kabupaten Tapanuli Utara, Sumatera Utara.
                   </p>
                 </div>
                 
                 <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.6974128509826!2d106.8305!3d-6.169!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5cfea21e05d%3A0x272b1448b1d9607b!2sGereja%20Katedral%20Jakarta!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3986.9652234057637!2d99.3574146147547!3d2.031825798518974!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x302ddb004dbef8ad%3A0xfb05168c67733080!2sGereja%20Katolik%20Garoga!5e0!3m2!1sid!2sid!4v1711280000000!5m2!1sid!2sid"
                     width="100%" 
                     height="100%" 
                     style={{ border: 0 }} 
@@ -678,7 +678,7 @@ export default function Home() {
                   asChild
                   className="w-full h-12 bg-white text-black hover:bg-white/90 font-bold tracking-[0.1em] rounded-xl transition-all shadow-lg"
                 >
-                  <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://www.google.com/maps/place/Gereja+Katolik+Garoga/@2.0318258,99.2837718,13z/data=!4m6!3m5!1s0x302ddb004dbef8ad:0xfb05168c67733080!8m2!3d2.0318258!4d99.3599895!16s%2Fg%2F11vs986vp1!5m1!1e4?entry=ttu&g_ep=EgoyMDI2MDMyNC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">
                     BUKA GOOGLE MAPS <ExternalLink className="ml-2 w-4 h-4" />
                   </a>
                 </Button>
@@ -693,13 +693,13 @@ export default function Home() {
                 <div className="flex gap-3 items-start">
                   <MapPin className="w-5 h-5 text-white/40 shrink-0 mt-0.5" />
                   <p className="text-white/60 text-sm leading-relaxed font-body">
-                    Grand Ballroom, Hotel Indonesia Kempinski, Jl. M.H. Thamrin No.1, Jakarta Pusat.
+                    Kabupaten Tapanuli Utara, Sumatera Utara.
                   </p>
                 </div>
 
                 <div className="w-full aspect-video rounded-2xl overflow-hidden border border-white/10 bg-white/5">
                   <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.521255857245!2d106.8214!3d-6.1947!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f417688229b1%3A0xc6214f48b0a178e2!2sHotel%20Indonesia%20Kempinski%20Jakarta!5e0!3m2!1sid!2sid!4v1710000000000!5m2!1sid!2sid"
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d255146.406972034!2d98.8144!3d2.0163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x302e132049c69345%3A0xc6c7d7a221f7a08e!2sKabupaten%20Tapanuli%20Utara!5e0!3m2!1sid!2sid!4v1711280000000!5m2!1sid!2sid"
                     width="100%" 
                     height="100%" 
                     style={{ border: 0 }} 
