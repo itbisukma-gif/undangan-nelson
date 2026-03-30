@@ -52,11 +52,11 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
           transition={{ duration: 1, ease: "easeOut" }}
           className={cn(
             "relative w-full no-scrollbar px-8 pt-20 pb-40 bg-gradient-to-t from-black via-black/80 to-transparent",
-            isFull ? "h-full flex flex-col justify-center items-center pb-20" : "max-h-[70vh] overflow-y-auto",
+            isFull ? "h-full flex flex-col justify-center items-center pb-32" : "max-h-[70vh] overflow-y-auto",
             className
           )}
         >
-          <div className={cn("mx-auto space-y-8", isFull ? "w-full max-w-4xl" : "max-w-md")}>
+          <div className={cn("mx-auto space-y-8", isFull ? "w-full max-w-5xl" : "max-w-md")}>
             {children}
           </div>
         </motion.div>

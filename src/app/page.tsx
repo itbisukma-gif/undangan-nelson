@@ -332,9 +332,9 @@ export default function Home() {
           </div>
         </WeddingSection>
 
-        {/* 5. Photo Gallery - Updated to Full Page */}
+        {/* 5. Photo Gallery - Optimized Layout */}
         <WeddingSection id="gallery" bgImageId="gallery-bg" isFull>
-          <div className="text-center space-y-10 w-full px-4">
+          <div className="text-center space-y-6 w-full max-w-5xl px-4">
             <motion.h2 
               variants={textVariants} initial="hidden" whileInView="visible" custom={1}
               className="text-4xl md:text-5xl font-headline italic mb-4"
@@ -342,11 +342,11 @@ export default function Home() {
               Galeri Foto
             </motion.h2>
             
-            <div className="w-full flex flex-col md:flex-row gap-8 items-center justify-center">
-              {/* Hero Image Slider */}
+            <div className="w-full flex flex-col lg:flex-row gap-6 lg:gap-10 items-center justify-center">
+              {/* Hero Image Slider - Adjust width/height for better balance */}
               <motion.div 
                 variants={textVariants} initial="hidden" whileInView="visible" custom={2}
-                className="relative aspect-[3/4] w-full max-w-lg rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 group cursor-pointer"
+                className="relative aspect-[4/5] w-full max-w-[320px] md:max-w-[400px] lg:max-w-[450px] rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 group cursor-pointer"
                 onClick={() => setSelectedImage(galleryImages[activeGalleryIndex].url)}
               >
                 <AnimatePresence mode="wait">
@@ -363,30 +363,30 @@ export default function Home() {
                 </AnimatePresence>
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                  <div className="bg-white/10 backdrop-blur-xl rounded-full p-6 scale-75 group-hover:scale-100 transition-transform duration-700">
-                    <Maximize2 className="w-10 h-10 text-white" />
+                  <div className="bg-white/10 backdrop-blur-xl rounded-full p-4 md:p-6 scale-75 group-hover:scale-100 transition-transform duration-700">
+                    <Maximize2 className="w-8 h-8 md:w-10 md:h-10 text-white" />
                   </div>
                 </div>
 
-                <div className="absolute bottom-6 left-1/2 -translate-x-1/2 px-6 py-2 bg-black/60 backdrop-blur-xl rounded-full text-xs tracking-[0.3em] font-bold text-white/90 border border-white/10">
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-black/60 backdrop-blur-xl rounded-full text-[10px] md:text-xs tracking-[0.3em] font-bold text-white/90 border border-white/10">
                   {activeGalleryIndex + 1} / {galleryImages.length}
                 </div>
               </motion.div>
 
-              {/* Selector / Thumbnails - Side on desktop, bottom on mobile */}
+              {/* Selector / Thumbnails - Vertical on Desktop, Horizontal on Mobile */}
               <motion.div 
                 variants={textVariants} initial="hidden" whileInView="visible" custom={3}
-                className="flex md:flex-col justify-center gap-4 px-4 py-2 overflow-x-auto md:overflow-y-auto no-scrollbar"
+                className="flex lg:flex-col justify-center gap-3 md:gap-4 w-full lg:w-auto px-4 py-2 overflow-x-auto lg:overflow-y-auto no-scrollbar scroll-smooth"
               >
                 {galleryImages.map((img, idx) => (
                   <button
                     key={img.id}
                     onClick={() => setActiveGalleryIndex(idx)}
                     className={cn(
-                      "relative flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border-2 transition-all duration-700",
+                      "relative flex-shrink-0 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl overflow-hidden border-2 transition-all duration-500",
                       activeGalleryIndex === idx 
-                        ? "border-white scale-110 shadow-2xl z-10" 
-                        : "border-transparent opacity-30 hover:opacity-100"
+                        ? "border-white scale-105 md:scale-110 shadow-2xl z-10" 
+                        : "border-transparent opacity-40 hover:opacity-100"
                     )}
                   >
                     <img 
