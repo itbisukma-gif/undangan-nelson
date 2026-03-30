@@ -14,6 +14,12 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { 
   Calendar, 
   MapPin, 
@@ -29,8 +35,7 @@ import {
   VolumeX,
   Copy,
   Check,
-  Users,
-  ImageIcon
+  ExternalLink
 } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
@@ -42,6 +47,7 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [copiedId, setCopiedId] = useState<string | null>(null)
+  const [isLocationOpen, setIsLocationOpen] = useState(false)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -293,7 +299,10 @@ export default function Home() {
                     </div>
                   </div>
 
-                  <Button className="w-full bg-white text-black hover:bg-white/90 font-bold tracking-[0.2em] h-14 rounded-2xl active:scale-95 transition-all shadow-xl">
+                  <Button 
+                    onClick={() => setIsLocationOpen(true)}
+                    className="w-full bg-white text-black hover:bg-white/90 font-bold tracking-[0.2em] h-14 rounded-2xl active:scale-95 transition-all shadow-xl"
+                  >
                     PETUNJUK LOKASI <MapPin className="ml-2 w-4 h-4" />
                   </Button>
                 </CardContent>
@@ -436,6 +445,7 @@ export default function Home() {
         <NavigationPill />
       </div>
 
+      {/* Gallery Modal */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-4xl bg-black/95 border-white/10 p-0 overflow-hidden shadow-2xl rounded-[2.5rem]">
           <DialogHeader className="sr-only">
@@ -446,6 +456,61 @@ export default function Home() {
               <img src={selectedImage} alt="Gallery view" className="w-full h-full object-contain" />
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Location Modal */}
+      <Dialog open={isLocationOpen} onOpenChange={setIsLocationOpen}>
+        <DialogContent className="bg-black/95 border border-white/10 text-white rounded-[2rem] max-w-sm w-[90%] mx-auto p-6 shadow-2xl backdrop-blur-2xl">
+          <DialogHeader className="mb-4">
+            <DialogTitle className="font-headline italic text-2xl text-center">Petunjuk Lokasi</DialogTitle>
+          </DialogHeader>
+          
+          <Accordion type="single" collapsible className="w-full">
+            <AccordionItem value="pemberkatan" className="border-white/10">
+              <AccordionTrigger className="font-headline italic text-lg hover:no-underline py-4 text-white/90">
+                Pemberkatan
+              </AccordionTrigger>
+              <AccordionContent className="space-y-4 pt-2 pb-6">
+                <div className="flex gap-3 items-start">
+                  <MapPin className="w-5 h-5 text-white/40 shrink-0 mt-0.5" />
+                  <p className="text-white/60 text-sm leading-relaxed font-body">
+                    Gereja Katedral Jakarta, Jl. Katedral No.7, Ps. Baru, Sawah Besar, Jakarta Pusat.
+                  </p>
+                </div>
+                <Button 
+                  asChild
+                  className="w-full h-12 bg-white text-black hover:bg-white/90 font-bold tracking-[0.1em] rounded-xl transition-all shadow-lg"
+                >
+                  <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">
+                    BUKA GOOGLE MAPS <ExternalLink className="ml-2 w-4 h-4" />
+                  </a>
+                </Button>
+              </AccordionContent>
+            </AccordionItem>
+            
+            <AccordionItem value="resepsi" className="border-white/10">
+              <AccordionTrigger className="font-headline italic text-lg hover:no-underline py-4 text-white/90">
+                Resepsi
+              </AccordionTrigger>
+              <AccordionContent className="space-y-4 pt-2 pb-6">
+                <div className="flex gap-3 items-start">
+                  <MapPin className="w-5 h-5 text-white/40 shrink-0 mt-0.5" />
+                  <p className="text-white/60 text-sm leading-relaxed font-body">
+                    Grand Ballroom, Hotel Indonesia Kempinski, Jl. M.H. Thamrin No.1, Jakarta Pusat.
+                  </p>
+                </div>
+                <Button 
+                  asChild
+                  className="w-full h-12 bg-white text-black hover:bg-white/90 font-bold tracking-[0.1em] rounded-xl transition-all shadow-lg"
+                >
+                  <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">
+                    BUKA GOOGLE MAPS <ExternalLink className="ml-2 w-4 h-4" />
+                  </a>
+                </Button>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </DialogContent>
       </Dialog>
     </main>
