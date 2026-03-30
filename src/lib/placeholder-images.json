@@ -14,9 +14,9 @@
     },
     {
       "id": "couple-bg",
-      "description": "Floral aesthetic background",
-      "imageUrl": "https://picsum.photos/seed/wedding_floral/1080/1920",
-      "imageHint": "floral background"
+      "description": "Halaman Mempelai Background",
+      "imageUrl": "/Background/Page_2.png",
+      "imageHint": "wedding couple"
     },
     {
       "id": "event-bg",
