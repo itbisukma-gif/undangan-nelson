@@ -13,26 +13,40 @@ interface WeddingSectionProps {
   children: React.ReactNode
   className?: string
   isFull?: boolean
+  bgVariants?: any
 }
 
-export function WeddingSection({ id, bgImageId, children, className, isFull = false }: WeddingSectionProps) {
+export function WeddingSection({ 
+  id, 
+  bgImageId, 
+  children, 
+  className, 
+  isFull = false,
+  bgVariants 
+}: WeddingSectionProps) {
   const bgImage = PlaceHolderImages.find((img) => img.id === bgImageId)
 
   return (
     <section id={id} className="relative h-screen w-full flex flex-col justify-end overflow-hidden snap-start bg-black">
-      {/* Background Layer */}
-      <div className="absolute inset-0 z-0">
+      {/* Background Layer with Animation */}
+      <motion.div 
+        className="absolute inset-0 z-0"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: false, amount: 0.1 }}
+        variants={bgVariants}
+      >
         {bgImage && (
           <Image
             src={bgImage.imageUrl}
             alt={bgImage.description}
             fill
-            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.45] blur-[1px] scale-105"
+            className="object-cover brightness-[0.35] blur-[1.5px]"
             priority
             data-ai-hint={bgImage.imageHint}
           />
         )}
-      </div>
+      </motion.div>
 
       {/* Content Area */}
       <div className={cn(
