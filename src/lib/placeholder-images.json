@@ -1,3 +1,28 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "welcome-bg",
+      "description": "Elegant wedding couple posing",
+      "imageUrl": "https://picsum.photos/seed/wedding1/1080/1920",
+      "imageHint": "wedding couple"
+    },
+    {
+      "id": "story-bg",
+      "description": "Couple holding hands close up",
+      "imageUrl": "https://picsum.photos/seed/wedding2/1080/1920",
+      "imageHint": "wedding hands"
+    },
+    {
+      "id": "rsvp-bg",
+      "description": "Wedding rings on a table",
+      "imageUrl": "https://picsum.photos/seed/wedding3/1080/1920",
+      "imageHint": "wedding rings"
+    },
+    {
+      "id": "gallery-bg",
+      "description": "Happy couple laughing",
+      "imageUrl": "https://picsum.photos/seed/wedding4/1080/1920",
+      "imageHint": "happy couple"
+    }
+  ]
 }
