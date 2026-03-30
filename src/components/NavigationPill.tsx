@@ -3,7 +3,7 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import { Heart, Users, Calendar, History, ImageIcon, Gift, Send } from "lucide-react"
+import { Heart, Users, Calendar, History, ImageIcon, Gift, Send, MessageSquare } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 // Urutan item navigasi yang disinkronkan dengan urutan seksi di page.tsx
@@ -15,6 +15,7 @@ const navItems = [
   { id: "gallery", icon: ImageIcon, label: "Galeri" },
   { id: "gift", icon: Gift, label: "Hadiah" },
   { id: "rsvp", icon: Send, label: "RSVP" },
+  { id: "wishes", icon: MessageSquare, label: "Ucapan" },
 ]
 
 export function NavigationPill() {
@@ -23,7 +24,6 @@ export function NavigationPill() {
   React.useEffect(() => {
     const observerOptions = {
       root: null,
-      // Margin diatur agar deteksi terjadi tepat saat seksi berada di tengah layar
       rootMargin: "-20% 0px -20% 0px",
       threshold: 0.2,
     }

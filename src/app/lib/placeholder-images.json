@@ -48,6 +48,12 @@
       "description": "Hadiah Cinta Background",
       "imageUrl": "/Background/Page_6.png",
       "imageHint": "wedding gift"
+    },
+    {
+      "id": "wishes-bg",
+      "description": "Ucapan Tamu Background",
+      "imageUrl": "/Background/Page_1.png",
+      "imageHint": "wedding wishes"
     }
   ]
 }

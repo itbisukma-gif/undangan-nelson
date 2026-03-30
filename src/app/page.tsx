@@ -36,7 +36,9 @@ import {
   VolumeX,
   Copy,
   Check,
-  ExternalLink
+  ExternalLink,
+  MessageSquare,
+  User2
 } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
@@ -54,6 +56,13 @@ export default function Home() {
   
   const audioRef = useRef<HTMLAudioElement>(null)
 
+  // Mock data for wishes (can be replaced with Supabase later)
+  const mockWishes = [
+    { name: "Keluarga Sianturi", status: "Hadir", message: "Selamat menempuh hidup baru Nelson & Suni. Semoga diberkati senantiasa." },
+    { name: "Sakti Manik", status: "Hadir", message: "Bahagia selalu ya kalian berdua sampai kakek nenek!" },
+    { name: "Rina & Teman-teman", status: "Hadir", message: "Selamat ya! Lancar-lancar acaranya sampai hari H." }
+  ]
+
   // Background Animation Variants
   const bgZoomOut = {
     hidden: { scale: 1.15, opacity: 0 },
@@ -63,13 +72,13 @@ export default function Home() {
     hidden: { x: "8%", opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
   }
-  const bgSlideLeft = {
-    hidden: { x: "-8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
-  }
   const bgSlideUp = {
     hidden: { y: "10%", opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 2, ease: "easeOut" } }
+  }
+  const bgSlideLeft = {
+    hidden: { x: "-8%", opacity: 0 },
+    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
   }
   const bgZoomIn = {
     hidden: { scale: 0.95, opacity: 0 },
@@ -197,10 +206,9 @@ export default function Home() {
             transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden"
           >
-            {/* Background Layer with Dim and Blur */}
             <motion.div 
               className="absolute inset-0 z-0"
-              initial={{ scale: 1.1, opacity: 0 }}
+              initial={{ scale: 1.05, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 2.5 }}
             >
@@ -209,7 +217,7 @@ export default function Home() {
                   src={coverBg.imageUrl}
                   alt={coverBg.description}
                   fill
-                  className="object-cover brightness-[0.25] blur-[2px]"
+                  className="object-cover brightness-[0.25] blur-[1px]"
                   priority
                 />
               )}
@@ -241,24 +249,24 @@ export default function Home() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.8, duration: 1 }}
-                className="flex items-center gap-4 md:gap-8 mb-12"
+                className="flex items-center justify-center gap-6 mb-12"
               >
-                <div className="text-center min-w-[60px]">
+                <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.days}</span>
                   <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Hari</span>
                 </div>
-                <div className="h-8 w-px bg-white/20" />
-                <div className="text-center min-w-[60px]">
+                <div className="h-10 w-[1px] bg-white/10" />
+                <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.hours}</span>
                   <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Jam</span>
                 </div>
-                <div className="h-8 w-px bg-white/20" />
-                <div className="text-center min-w-[60px]">
+                <div className="h-10 w-[1px] bg-white/10" />
+                <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.minutes}</span>
                   <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Menit</span>
                 </div>
-                <div className="h-8 w-px bg-white/20" />
-                <div className="text-center min-w-[60px]">
+                <div className="h-10 w-[1px] bg-white/10" />
+                <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.seconds}</span>
                   <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Detik</span>
                 </div>
@@ -366,7 +374,7 @@ export default function Home() {
             </motion.div>
             
             <div className="space-y-16 relative pl-10">
-              <div className="absolute left-[20px] top-2 bottom-2 w-px bg-gradient-to-b from-white/5 via-white/20 to-white/5 -translate-x-1/2" />
+              <div className="absolute left-[20px] top-2 bottom-2 w-[1px] bg-gradient-to-b from-white/5 via-white/20 to-white/5 -translate-x-1/2" />
               
               {[
                 { year: "2020", title: "Pertemuan Pertama", desc: "Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat percakapan sederhana yang tak berujung. Sebuah awal yang tak disangka namun sangat berharga." },
@@ -374,7 +382,7 @@ export default function Home() {
                 { year: "2025", title: "Lembaran Baru", desc: "Kini, kami bersiap melangkah ke gerbang pernikahan, mengikat janji suci di hadapan Tuhan dan keluarga tercinta untuk selamanya." }
               ].map((item, index) => (
                 <motion.div key={index} variants={fadeInUp} className="relative group">
-                  <div className="absolute left-[-20px] top-1.5 -translate-x-1/2 flex items-center justify-center w-0 h-0">
+                  <div className="absolute left-[-20px] top-1.5 -translate-x-1/2 flex items-center justify-center">
                     <div className="w-2.5 h-2.5 rounded-full bg-white group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(255,255,255,0.8)] relative z-10" />
                     <div className="absolute w-6 h-6 rounded-full border border-white/10 group-hover:border-white/40 transition-colors animate-pulse" />
                   </div>
@@ -564,6 +572,38 @@ export default function Home() {
               <Button className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl text-xs">
                 KIRIM KONFIRMASI <Send className="ml-2 w-4 h-4" />
               </Button>
+            </motion.div>
+          </motion.div>
+        </WeddingSection>
+
+        {/* 8. Wishes Section (Ucapan & Buku Tamu) */}
+        <WeddingSection id="wishes" bgImageId="wishes-bg" bgVariants={bgZoomOut}>
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10">
+            <motion.div variants={fadeInUp}>
+              <MessageSquare className="w-8 h-8 mx-auto text-white/30" />
+              <h2 className="text-4xl font-headline italic mt-6 mb-4">Ucapan & Doa</h2>
+              <p className="text-white/50 text-[10px] font-body tracking-wide leading-relaxed px-4">Terima kasih atas doa dan harapan baik Anda untuk kami berdua.</p>
+            </motion.div>
+            
+            <motion.div variants={fadeInUp} className="space-y-4 max-h-[50vh] overflow-y-auto pr-2 no-scrollbar">
+              {mockWishes.map((wish, idx) => (
+                <div key={idx} className="p-6 rounded-2xl bg-glass border-white/10 text-left space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                        <User2 className="w-4 h-4 text-white/40" />
+                      </div>
+                      <p className="text-sm font-headline italic text-white/90">{wish.name}</p>
+                    </div>
+                    <span className="text-[9px] uppercase tracking-widest text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded-md">
+                      {wish.status}
+                    </span>
+                  </div>
+                  <p className="text-xs text-white/60 font-body italic leading-relaxed">
+                    "{wish.message}"
+                  </p>
+                </div>
+              ))}
             </motion.div>
           </motion.div>
         </WeddingSection>
