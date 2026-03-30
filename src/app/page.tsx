@@ -36,7 +36,6 @@ export default function Home() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   useEffect(() => {
-    // Ambil nama tamu dari URL query parameter ?to=Nama+Tamu
     const params = new URLSearchParams(window.location.search)
     const to = params.get("to")
     if (to) setGuestName(to)
@@ -57,8 +56,8 @@ export default function Home() {
             key="cover"
             initial={{ opacity: 1 }}
             exit={{ y: "-100%", opacity: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black"
+            transition={{ duration: 1, ease: [0.43, 0.13, 0.23, 0.96] }}
+            className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden"
           >
             <div className="absolute inset-0 opacity-60">
               <Image 
@@ -66,45 +65,73 @@ export default function Home() {
                 alt="Cover Background"
                 fill
                 className="object-cover grayscale"
+                priority
               />
             </div>
-            <div className="relative z-10 text-center px-6">
+            <div className="relative z-10 w-full max-w-lg text-center px-6 flex flex-col items-center justify-center">
               <motion.p 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 }}
-                className="font-body tracking-[0.3em] uppercase text-sm mb-4"
+                className="font-body tracking-[0.4em] uppercase text-xs md:text-sm mb-6 text-white/80"
               >
                 Undangan Pernikahan
               </motion.p>
-              <motion.h1 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="font-headline text-6xl md:text-8xl mb-8 italic"
+              
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, duration: 0.8 }}
+                className="mb-10"
               >
-                Cinta & Abadi
-              </motion.h1>
+                <h1 className="font-headline text-6xl md:text-8xl mb-2 italic leading-tight">
+                  Cinta & Abadi
+                </h1>
+                <div className="h-px w-20 bg-white/30 mx-auto" />
+              </motion.div>
+
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.6 }}
-                className="mb-12"
+                className="mb-14"
               >
-                <p className="font-body text-white/70 mb-2">Kepada Yth. Bapak/Ibu/Saudara/i</p>
-                <h2 className="text-2xl font-headline italic font-bold">{guestName}</h2>
+                <p className="font-body text-white/60 mb-3 text-sm italic">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+                <h2 className="text-3xl md:text-4xl font-headline italic font-bold text-white shadow-sm">{guestName}</h2>
               </motion.div>
+
               <motion.div
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ delay: 0.8 }}
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.8, type: "spring", stiffness: 100 }}
+                className="w-full flex justify-center"
               >
-                <Button 
-                  onClick={() => setIsOpen(true)}
-                  className="bg-white text-black hover:bg-white/90 rounded-full px-8 py-6 h-auto text-lg font-bold tracking-widest flex gap-2"
+                <motion.div
+                  whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255,255,255,0.2)" }}
+                  whileTap={{ scale: 0.95 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
-                  BUKA UNDANGAN <MailOpen className="w-5 h-5" />
-                </Button>
+                  <Button 
+                    onClick={() => setIsOpen(true)}
+                    className="bg-white text-black hover:bg-white rounded-full px-10 py-7 h-auto text-sm md:text-base font-bold tracking-[0.2em] flex items-center gap-3 group overflow-hidden relative shadow-2xl"
+                  >
+                    <span className="relative z-10">BUKA UNDANGAN</span>
+                    <motion.div
+                      animate={{ 
+                        y: [0, -3, 0],
+                        scale: [1, 1.1, 1]
+                      }}
+                      transition={{ 
+                        repeat: Infinity, 
+                        duration: 2, 
+                        ease: "easeInOut" 
+                      }}
+                      className="relative z-10"
+                    >
+                      <MailOpen className="w-5 h-5 transition-transform group-hover:rotate-12" />
+                    </motion.div>
+                  </Button>
+                </motion.div>
               </motion.div>
             </div>
           </motion.div>
@@ -141,7 +168,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white/20 mb-4">
+                <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white/20 mb-4 shadow-xl">
                   <img src="https://picsum.photos/seed/groom/400/400" alt="Groom" className="w-full h-full object-cover grayscale" />
                 </div>
                 <h3 className="text-2xl font-headline italic mb-1">Abadi Prasetya</h3>
@@ -157,7 +184,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, x: 0 }}
                 className="flex flex-col items-center text-center"
               >
-                <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white/20 mb-4">
+                <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white/20 mb-4 shadow-xl">
                   <img src="https://picsum.photos/seed/bride/400/400" alt="Bride" className="w-full h-full object-cover grayscale" />
                 </div>
                 <h3 className="text-2xl font-headline italic mb-1">Cinta Lestari</h3>
