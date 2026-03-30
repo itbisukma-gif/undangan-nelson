@@ -48,6 +48,19 @@ export default function Home() {
     { id: 4, url: "https://picsum.photos/seed/gallery4/800/800" },
   ]
 
+  const textVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: (custom: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: { 
+        delay: custom * 0.2, 
+        duration: 0.8, 
+        ease: [0.21, 0.47, 0.32, 0.98] 
+      }
+    })
+  }
+
   return (
     <main className="bg-black text-white selection:bg-white selection:text-black">
       <AnimatePresence>
@@ -141,24 +154,47 @@ export default function Home() {
       <div className={isOpen ? "snap-y snap-mandatory h-screen overflow-y-scroll no-scrollbar" : "hidden"}>
         {/* 1. Welcome Section */}
         <WeddingSection id="welcome" bgImageId="welcome-bg">
-          <motion.div className="text-center">
-            <p className="text-white/70 uppercase tracking-[0.3em] text-sm mb-4 font-body">The Wedding Of</p>
-            <h1 className="text-5xl md:text-7xl mb-6 font-headline leading-tight italic">Cinta & Abadi</h1>
-            <div className="flex flex-col items-center gap-4 text-white/90">
+          <div className="text-center">
+            <motion.p 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={1}
+              className="text-white/70 uppercase tracking-[0.3em] text-sm mb-4 font-body"
+            >
+              The Wedding Of
+            </motion.p>
+            <motion.h1 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={2}
+              className="text-5xl md:text-7xl mb-6 font-headline leading-tight italic"
+            >
+              Cinta & Abadi
+            </motion.h1>
+            <motion.div 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={3}
+              className="flex flex-col items-center gap-4 text-white/90"
+            >
               <div className="flex items-center gap-2">
                 <Calendar className="w-4 h-4" />
                 <span className="text-lg tracking-widest font-body">24 . 12 . 2025</span>
               </div>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </WeddingSection>
 
         {/* 2. Couple Section */}
         <WeddingSection id="couple" bgImageId="couple-bg">
           <div className="space-y-12">
             <div className="text-center">
-              <h2 className="text-3xl font-headline italic mb-2">Mempelai</h2>
-              <p className="text-white/70 text-sm font-body italic">"Maka jadilah mereka satu daging."</p>
+              <motion.h2 
+                variants={textVariants} initial="hidden" whileInView="visible" custom={1}
+                className="text-3xl font-headline italic mb-2"
+              >
+                Mempelai
+              </motion.h2>
+              <motion.p 
+                variants={textVariants} initial="hidden" whileInView="visible" custom={2}
+                className="text-white/70 text-sm font-body italic"
+              >
+                "Maka jadilah mereka satu daging."
+              </motion.p>
             </div>
 
             <div className="grid gap-12">
@@ -166,6 +202,7 @@ export default function Home() {
               <motion.div 
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.3 }}
                 className="flex flex-col items-center text-center"
               >
                 <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white/20 mb-4 shadow-xl">
@@ -182,6 +219,7 @@ export default function Home() {
               <motion.div 
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
                 className="flex flex-col items-center text-center"
               >
                 <div className="w-40 h-40 rounded-full overflow-hidden border-4 border-white/20 mb-4 shadow-xl">
@@ -197,68 +235,84 @@ export default function Home() {
           </div>
         </WeddingSection>
 
-        {/* 3. Event / Pemberkatan */}
+        {/* 3. Event Section */}
         <WeddingSection id="event" bgImageId="event-bg">
           <div className="space-y-6 text-center">
-            <div className="mb-4">
+            <motion.div 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={1}
+              className="mb-4"
+            >
               <Heart className="w-8 h-8 mx-auto text-white/50 mb-4" />
               <h2 className="text-3xl font-headline italic">Acara Penting</h2>
-            </div>
+            </motion.div>
 
-            <Card className="bg-white/5 border-white/10 backdrop-blur-md">
-              <CardContent className="p-8 space-y-6">
-                <div>
-                  <h3 className="text-xl font-headline italic text-white mb-2 underline decoration-white/30 underline-offset-8">Pemberkatan</h3>
-                  <div className="space-y-2 text-white/80">
-                    <div className="flex items-center justify-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      <span>09.00 - 11.00 WIB</span>
-                    </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <Calendar className="w-4 h-4" />
-                      <span>Minggu, 24 Desember 2025</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="h-px bg-white/10 w-full" />
-
-                <div>
-                  <h3 className="text-xl font-headline italic text-white mb-2 underline decoration-white/30 underline-offset-8">Resepsi</h3>
-                  <div className="space-y-2 text-white/80">
-                    <div className="flex items-center justify-center gap-2">
-                      <Clock className="w-4 h-4" />
-                      <span>12.00 - Selesai</span>
-                    </div>
-                    <div className="flex items-center justify-center gap-2">
-                      <MapPin className="w-4 h-4" />
-                      <span>Grand Ballroom, Jakarta</span>
+            <motion.div
+              variants={textVariants} initial="hidden" whileInView="visible" custom={2}
+            >
+              <Card className="bg-white/5 border-white/10 backdrop-blur-md">
+                <CardContent className="p-8 space-y-6">
+                  <div>
+                    <h3 className="text-xl font-headline italic text-white mb-2 underline decoration-white/30 underline-offset-8">Pemberkatan</h3>
+                    <div className="space-y-2 text-white/80">
+                      <div className="flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        <span>09.00 - 11.00 WIB</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <Calendar className="w-4 h-4" />
+                        <span>Minggu, 24 Desember 2025</span>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <Button className="w-full bg-white text-black hover:bg-white/80 font-bold tracking-widest">
-                  LIHAT LOKASI <MapPin className="ml-2 w-4 h-4" />
-                </Button>
-              </CardContent>
-            </Card>
+                  <div className="h-px bg-white/10 w-full" />
+
+                  <div>
+                    <h3 className="text-xl font-headline italic text-white mb-2 underline decoration-white/30 underline-offset-8">Resepsi</h3>
+                    <div className="space-y-2 text-white/80">
+                      <div className="flex items-center justify-center gap-2">
+                        <Clock className="w-4 h-4" />
+                        <span>12.00 - Selesai</span>
+                      </div>
+                      <div className="flex items-center justify-center gap-2">
+                        <MapPin className="w-4 h-4" />
+                        <span>Grand Ballroom, Jakarta</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button className="w-full bg-white text-black hover:bg-white/80 font-bold tracking-widest">
+                    LIHAT LOKASI <MapPin className="ml-2 w-4 h-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </WeddingSection>
 
         {/* 4. Story Timeline */}
         <WeddingSection id="story" bgImageId="story-bg">
           <div className="space-y-8">
-            <div className="text-center mb-10">
+            <motion.div 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={1}
+              className="text-center mb-10"
+            >
               <History className="w-8 h-8 mx-auto mb-4 text-white/50" />
               <h2 className="text-3xl font-headline italic">Kisah Kami</h2>
-            </div>
+            </motion.div>
             <div className="space-y-12 relative before:absolute before:left-0 before:top-0 before:bottom-0 before:w-px before:bg-white/20 pl-6 text-left">
-              <motion.div className="relative">
+              <motion.div 
+                variants={textVariants} initial="hidden" whileInView="visible" custom={2}
+                className="relative"
+              >
                 <div className="absolute -left-[25px] top-0 w-2 h-2 rounded-full bg-white ring-4 ring-black" />
                 <h3 className="text-xl font-headline italic mb-1">Pertemuan Pertama</h3>
                 <p className="text-white/70 text-sm leading-relaxed font-body">Berawal dari kedai kopi sederhana di tahun 2020. Sebuah sapaan ringan yang mengubah segalanya.</p>
               </motion.div>
-              <motion.div className="relative">
+              <motion.div 
+                variants={textVariants} initial="hidden" whileInView="visible" custom={3}
+                className="relative"
+              >
                 <div className="absolute -left-[25px] top-0 w-2 h-2 rounded-full bg-white ring-4 ring-black" />
                 <h3 className="text-xl font-headline italic mb-1">Tumbuh Bersama</h3>
                 <p className="text-white/70 text-sm leading-relaxed font-body">Melalui berbagai musim, kami belajar bahwa cinta adalah pilihan yang kita buat setiap hari.</p>
@@ -270,11 +324,22 @@ export default function Home() {
         {/* 5. Photo Gallery */}
         <WeddingSection id="gallery" bgImageId="gallery-bg">
           <div className="text-center space-y-6">
-            <h2 className="text-3xl font-headline italic mb-2">Galeri Foto</h2>
-            <div className="grid grid-cols-2 gap-3">
-              {galleryImages.map((img) => (
+            <motion.h2 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={1}
+              className="text-3xl font-headline italic mb-2"
+            >
+              Galeri Foto
+            </motion.h2>
+            <motion.div 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={2}
+              className="grid grid-cols-2 gap-3"
+            >
+              {galleryImages.map((img, idx) => (
                 <motion.div 
                   key={img.id} 
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: idx * 0.1 }}
                   whileHover={{ scale: 0.98 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setSelectedImage(img.url)}
@@ -290,34 +355,40 @@ export default function Home() {
                   </div>
                 </motion.div>
               ))}
-            </div>
+            </motion.div>
           </div>
         </WeddingSection>
 
         {/* 6. Gift Section */}
         <WeddingSection id="gift" bgImageId="gift-bg">
           <div className="text-center space-y-6">
-            <Gift className="w-10 h-10 mx-auto text-white/50" />
-            <h2 className="text-3xl font-headline italic mb-2">Kado Pernikahan</h2>
-            <p className="text-white/70 text-sm font-body">Doa restu Anda adalah karunia terindah. Namun jika ingin memberikan tanda kasih, Anda dapat mengirimkannya melalui:</p>
+            <motion.div variants={textVariants} initial="hidden" whileInView="visible" custom={1}>
+              <Gift className="w-10 h-10 mx-auto text-white/50" />
+              <h2 className="text-3xl font-headline italic mb-2 mt-4">Kado Pernikahan</h2>
+              <p className="text-white/70 text-sm font-body">Doa restu Anda adalah karunia terindah. Namun jika ingin memberikan tanda kasih, Anda dapat mengirimkannya melalui:</p>
+            </motion.div>
             
             <div className="grid gap-4">
-              <Card className="bg-white/5 border-white/10">
-                <CardContent className="p-6 flex flex-col items-center">
-                  <p className="font-bold text-lg mb-1">Bank Central Asia</p>
-                  <p className="text-2xl font-mono tracking-wider mb-2">1234567890</p>
-                  <p className="text-white/50 text-sm uppercase">a.n Abadi Prasetya</p>
-                  <Button variant="ghost" className="mt-4 text-xs underline underline-offset-4">Salin Rekening</Button>
-                </CardContent>
-              </Card>
-              <Card className="bg-white/5 border-white/10">
-                <CardContent className="p-6 flex flex-col items-center">
-                  <p className="font-bold text-lg mb-1">Bank Mandiri</p>
-                  <p className="text-2xl font-mono tracking-wider mb-2">0987654321</p>
-                  <p className="text-white/50 text-sm uppercase">a.n Cinta Lestari</p>
-                  <Button variant="ghost" className="mt-4 text-xs underline underline-offset-4">Salin Rekening</Button>
-                </CardContent>
-              </Card>
+              <motion.div variants={textVariants} initial="hidden" whileInView="visible" custom={2}>
+                <Card className="bg-white/5 border-white/10">
+                  <CardContent className="p-6 flex flex-col items-center">
+                    <p className="font-bold text-lg mb-1">Bank Central Asia</p>
+                    <p className="text-2xl font-mono tracking-wider mb-2">1234567890</p>
+                    <p className="text-white/50 text-sm uppercase">a.n Abadi Prasetya</p>
+                    <Button variant="ghost" className="mt-4 text-xs underline underline-offset-4">Salin Rekening</Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
+              <motion.div variants={textVariants} initial="hidden" whileInView="visible" custom={3}>
+                <Card className="bg-white/5 border-white/10">
+                  <CardContent className="p-6 flex flex-col items-center">
+                    <p className="font-bold text-lg mb-1">Bank Mandiri</p>
+                    <p className="text-2xl font-mono tracking-wider mb-2">0987654321</p>
+                    <p className="text-white/50 text-sm uppercase">a.n Cinta Lestari</p>
+                    <Button variant="ghost" className="mt-4 text-xs underline underline-offset-4">Salin Rekening</Button>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
           </div>
         </WeddingSection>
@@ -325,9 +396,14 @@ export default function Home() {
         {/* 7. RSVP Interface */}
         <WeddingSection id="rsvp" bgImageId="rsvp-bg">
           <div className="text-center space-y-6">
-            <h2 className="text-3xl font-headline italic mb-2">Konfirmasi Kehadiran</h2>
-            <p className="text-white/70 text-sm mb-6 font-body">Mohon konfirmasi kehadiran Anda melalui formulir di bawah ini.</p>
-            <div className="space-y-4 text-left">
+            <motion.div variants={textVariants} initial="hidden" whileInView="visible" custom={1}>
+              <h2 className="text-3xl font-headline italic mb-2">Konfirmasi Kehadiran</h2>
+              <p className="text-white/70 text-sm mb-6 font-body">Mohon konfirmasi kehadiran Anda melalui formulir di bawah ini.</p>
+            </motion.div>
+            <motion.div 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={2}
+              className="space-y-4 text-left"
+            >
               <Input placeholder="Nama Lengkap" className="bg-white/5 border-white/20 h-12 text-white" />
               <div className="flex gap-4">
                 <Button variant="outline" className="flex-1 bg-white/5 border-white/20 h-12">Hadir</Button>
@@ -337,7 +413,7 @@ export default function Home() {
               <Button className="w-full h-12 bg-white text-black hover:bg-white/90 font-bold tracking-widest uppercase rounded-lg">
                 KIRIM RSVP <Send className="ml-2 w-4 h-4" />
               </Button>
-            </div>
+            </motion.div>
           </div>
         </WeddingSection>
 
