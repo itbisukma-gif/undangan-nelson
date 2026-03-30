@@ -27,7 +27,7 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
             src={bgImage.imageUrl}
             alt={bgImage.description}
             fill
-            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.7] blur-[3px] scale-110"
+            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.45] blur-[1px] scale-105"
             priority
             data-ai-hint={bgImage.imageHint}
           />
@@ -56,7 +56,7 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
         </motion.div>
 
         {/* Bottom Fade Gradient for navigation readability */}
-        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-20" />}
+        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none z-20" />}
       </div>
     </section>
   )
