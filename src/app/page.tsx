@@ -1,7 +1,7 @@
 
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { WeddingSection } from "@/components/WeddingSection"
 import { NavigationPill } from "@/components/NavigationPill"
@@ -49,6 +49,8 @@ export default function Home() {
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [isLocationOpen, setIsLocationOpen] = useState(false)
+  
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -70,6 +72,35 @@ export default function Home() {
     }, 5000)
     return () => clearInterval(interval)
   }, [isOpen, galleryImages.length])
+
+  // Audio Control Logic
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.muted = isMuted
+    }
+  }, [isMuted])
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        audioRef.current?.pause()
+      } else if (isOpen && !isMuted) {
+        audioRef.current?.play().catch(() => {})
+      }
+    }
+
+    document.addEventListener("visibilitychange", handleVisibilityChange)
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
+  }, [isOpen, isMuted])
+
+  const handleOpenInvitation = () => {
+    setIsOpen(true)
+    if (audioRef.current) {
+      audioRef.current.play().catch((error) => {
+        console.log("Autoplay prevented by browser:", error)
+      })
+    }
+  }
 
   const handleCopy = (text: string, id: string) => {
     navigator.clipboard.writeText(text.replace(/\s/g, ''))
@@ -99,6 +130,14 @@ export default function Home() {
 
   return (
     <main className="bg-black text-white selection:bg-white selection:text-black">
+      {/* Background Music */}
+      <audio
+        ref={audioRef}
+        src="/backgroud_song/Holong Panimpuli.webm"
+        loop
+        preload="auto"
+      />
+
       <AnimatePresence>
         {!isOpen && (
           <motion.div
@@ -155,7 +194,7 @@ export default function Home() {
                 transition={{ delay: 1.2, duration: 0.8 }}
               >
                 <Button 
-                  onClick={() => setIsOpen(true)}
+                  onClick={handleOpenInvitation}
                   className="bg-white text-black hover:bg-white/90 rounded-full px-12 py-8 h-auto text-xs md:text-sm font-bold tracking-[0.3em] flex items-center gap-4 shadow-2xl transition-all active:scale-95 group"
                 >
                   BUKA UNDANGAN
