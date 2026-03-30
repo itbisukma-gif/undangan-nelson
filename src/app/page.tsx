@@ -29,11 +29,13 @@ import {
   Maximize2
 } from "lucide-react"
 import Image from "next/image"
+import { cn } from "@/lib/utils"
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
   const [guestName, setGuestName] = useState("Tamu Undangan")
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
+  const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
@@ -47,6 +49,15 @@ export default function Home() {
     { id: 3, url: "https://picsum.photos/seed/gallery3/800/800" },
     { id: 4, url: "https://picsum.photos/seed/gallery4/800/800" },
   ]
+
+  // Auto-play for Hero Gallery
+  useEffect(() => {
+    if (!isOpen) return
+    const interval = setInterval(() => {
+      setActiveGalleryIndex((prev) => (prev + 1) % galleryImages.length)
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [isOpen, galleryImages.length])
 
   const textVariants = {
     hidden: { opacity: 0, y: 30 },
@@ -321,39 +332,79 @@ export default function Home() {
           </div>
         </WeddingSection>
 
-        {/* 5. Photo Gallery */}
+        {/* 5. Photo Gallery - Updated with Hero & Selector */}
         <WeddingSection id="gallery" bgImageId="gallery-bg">
-          <div className="text-center space-y-6">
+          <div className="text-center space-y-8">
             <motion.h2 
               variants={textVariants} initial="hidden" whileInView="visible" custom={1}
               className="text-3xl font-headline italic mb-2"
             >
               Galeri Foto
             </motion.h2>
+            
+            {/* Hero Image Slider */}
             <motion.div 
               variants={textVariants} initial="hidden" whileInView="visible" custom={2}
-              className="grid grid-cols-2 gap-3"
+              className="relative aspect-[4/5] w-full max-w-sm mx-auto rounded-2xl overflow-hidden shadow-2xl border border-white/10 group cursor-pointer"
+              onClick={() => setSelectedImage(galleryImages[activeGalleryIndex].url)}
+            >
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={galleryImages[activeGalleryIndex].id}
+                  src={galleryImages[activeGalleryIndex].url}
+                  initial={{ opacity: 0, scale: 1.1 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.8, ease: "easeInOut" }}
+                  className="absolute inset-0 w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700"
+                  alt="Hero Gallery"
+                />
+              </AnimatePresence>
+              
+              {/* Overlay elements */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                <div className="bg-white/20 backdrop-blur-md rounded-full p-4 scale-75 group-hover:scale-100 transition-transform duration-500">
+                  <Maximize2 className="w-8 h-8 text-white" />
+                </div>
+              </div>
+
+              {/* Counter Indicator */}
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-1 bg-black/40 backdrop-blur-md rounded-full text-[10px] tracking-[0.2em] font-bold text-white/80 border border-white/10">
+                {activeGalleryIndex + 1} / {galleryImages.length}
+              </div>
+            </motion.div>
+
+            {/* Selector / Thumbnails */}
+            <motion.div 
+              variants={textVariants} initial="hidden" whileInView="visible" custom={3}
+              className="flex justify-center gap-3 px-2 overflow-x-auto no-scrollbar"
             >
               {galleryImages.map((img, idx) => (
-                <motion.div 
-                  key={img.id} 
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: idx * 0.1 }}
-                  whileHover={{ scale: 0.98 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedImage(img.url)}
-                  className="aspect-square relative rounded-xl overflow-hidden border border-white/10 group cursor-pointer shadow-2xl"
+                <button
+                  key={img.id}
+                  onClick={() => setActiveGalleryIndex(idx)}
+                  className={cn(
+                    "relative flex-shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-500",
+                    activeGalleryIndex === idx 
+                      ? "border-white scale-110 shadow-lg shadow-white/10 z-10" 
+                      : "border-transparent opacity-40 hover:opacity-100"
+                  )}
                 >
                   <img 
                     src={img.url} 
-                    alt={`Gallery ${img.id}`} 
-                    className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500" 
+                    className={cn(
+                      "w-full h-full object-cover transition-all duration-500",
+                      activeGalleryIndex === idx ? "grayscale-0" : "grayscale"
+                    )} 
+                    alt={`Thumbnail ${idx}`} 
                   />
-                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                    <Maximize2 className="w-6 h-6 text-white" />
-                  </div>
-                </motion.div>
+                  {activeGalleryIndex === idx && (
+                    <motion.div 
+                      layoutId="gallery-active-thumb"
+                      className="absolute inset-0 bg-white/10"
+                    />
+                  )}
+                </button>
               ))}
             </motion.div>
           </div>
