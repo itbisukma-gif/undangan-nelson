@@ -3,13 +3,14 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import { Heart, BookOpen, ImageIcon, CheckCircle } from "lucide-react"
+import { Heart, History, Send, ImageIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+// Navigasi disusun berdasarkan urutan seksi di app/page.tsx
 const navItems = [
   { id: "welcome", icon: Heart, label: "Welcome" },
-  { id: "story", icon: BookOpen, label: "Our Story" },
-  { id: "rsvp", icon: CheckCircle, label: "RSVP" },
+  { id: "story", icon: History, label: "Our Story" },
+  { id: "rsvp", icon: Send, label: "RSVP" },
   { id: "gallery", icon: ImageIcon, label: "Gallery" },
 ]
 
@@ -19,9 +20,9 @@ export function NavigationPill() {
   React.useEffect(() => {
     const observerOptions = {
       root: null,
-      // Deteksi aktif ketika seksi berada di tengah layar
-      rootMargin: "-45% 0px -45% 0px",
-      threshold: 0,
+      // Deteksi aktif ketika seksi berada di area tengah layar (viewport)
+      rootMargin: "-20% 0px -20% 0px",
+      threshold: 0.5,
     }
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
@@ -65,7 +66,7 @@ export function NavigationPill() {
               key={item.id}
               onClick={() => scrollToSection(item.id)}
               className={cn(
-                "relative flex items-center justify-center w-12 h-12 rounded-full transition-colors",
+                "relative flex items-center justify-center w-12 h-12 rounded-full transition-colors outline-none",
                 isActive ? "text-black" : "text-white/70 hover:text-white"
               )}
             >

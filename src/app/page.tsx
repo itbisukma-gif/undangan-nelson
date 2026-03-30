@@ -8,7 +8,7 @@ import { NavigationPill } from "@/components/NavigationPill"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Calendar, MapPin, Heart, History, Users, Send, Music } from "lucide-react"
+import { Calendar, MapPin, History, Send, Music } from "lucide-react"
 
 export default function Home() {
   return (
@@ -87,7 +87,7 @@ export default function Home() {
           <h2 className="text-3xl font-headline italic mb-2">Join Our Celebration</h2>
           <p className="text-white/70 text-sm mb-6 font-body">Please let us know if you can attend by December 1st, 2025.</p>
           
-          <div className="space-y-4">
+          <div className="space-y-4 text-left">
             <Input 
               placeholder="Your Full Name" 
               className="bg-white/5 border-white/20 focus:border-white focus:ring-white h-12 text-white placeholder:text-white/40"
@@ -97,7 +97,7 @@ export default function Home() {
                 Attending
               </Button>
               <Button variant="outline" className="flex-1 bg-white/5 border-white/20 hover:bg-white hover:text-black transition-all h-12 rounded-lg">
-                Regretfully Decline
+                Decline
               </Button>
             </div>
             <Textarea 
@@ -141,7 +141,7 @@ export default function Home() {
       {/* Navigation */}
       <NavigationPill />
 
-      {/* Background Music Helper (Minimalist Visual) */}
+      {/* Background Music Helper */}
       <div className="fixed top-6 right-6 z-50">
         <motion.button
           whileHover={{ scale: 1.1 }}
