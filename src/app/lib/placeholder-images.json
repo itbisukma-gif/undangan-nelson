@@ -32,9 +32,9 @@
     },
     {
       "id": "rsvp-bg",
-      "description": "Wedding rings on a table",
-      "imageUrl": "https://picsum.photos/seed/wedding3/1080/1920",
-      "imageHint": "wedding rings"
+      "description": "Reservasi Background",
+      "imageUrl": "/Background/Page_7.png",
+      "imageHint": "wedding rsvp"
     },
     {
       "id": "gallery-bg",
