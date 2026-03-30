@@ -10,6 +10,12 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
 import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { 
   Calendar, 
   MapPin, 
   History, 
@@ -19,13 +25,15 @@ import {
   Gift, 
   Clock, 
   Heart,
-  MailOpen
+  MailOpen,
+  Maximize2
 } from "lucide-react"
 import Image from "next/image"
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
   const [guestName, setGuestName] = useState("Tamu Undangan")
+  const [selectedImage, setSelectedImage] = useState<string | null>(null)
 
   useEffect(() => {
     // Ambil nama tamu dari URL query parameter ?to=Nama+Tamu
@@ -33,6 +41,13 @@ export default function Home() {
     const to = params.get("to")
     if (to) setGuestName(to)
   }, [])
+
+  const galleryImages = [
+    { id: 1, url: "https://picsum.photos/seed/gallery1/800/800" },
+    { id: 2, url: "https://picsum.photos/seed/gallery2/800/800" },
+    { id: 3, url: "https://picsum.photos/seed/gallery3/800/800" },
+    { id: 4, url: "https://picsum.photos/seed/gallery4/800/800" },
+  ]
 
   return (
     <main className="bg-black text-white selection:bg-white selection:text-black">
@@ -229,11 +244,24 @@ export default function Home() {
         <WeddingSection id="gallery" bgImageId="gallery-bg">
           <div className="text-center space-y-6">
             <h2 className="text-3xl font-headline italic mb-2">Galeri Foto</h2>
-            <div className="grid grid-cols-2 gap-2">
-              {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="aspect-square relative rounded-lg overflow-hidden border border-white/10">
-                  <img src={`https://picsum.photos/seed/gallery${i}/400/400`} alt={`Gallery ${i}`} className="object-cover w-full h-full grayscale" />
-                </div>
+            <div className="grid grid-cols-2 gap-3">
+              {galleryImages.map((img) => (
+                <motion.div 
+                  key={img.id} 
+                  whileHover={{ scale: 0.98 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => setSelectedImage(img.url)}
+                  className="aspect-square relative rounded-xl overflow-hidden border border-white/10 group cursor-pointer shadow-2xl"
+                >
+                  <img 
+                    src={img.url} 
+                    alt={`Gallery ${img.id}`} 
+                    className="object-cover w-full h-full grayscale group-hover:grayscale-0 transition-all duration-500" 
+                  />
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                    <Maximize2 className="w-6 h-6 text-white" />
+                  </div>
+                </motion.div>
               ))}
             </div>
           </div>
@@ -296,6 +324,24 @@ export default function Home() {
           </button>
         </div>
       </div>
+
+      {/* Lightbox Dialog */}
+      <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
+        <DialogContent className="max-w-3xl bg-black/90 border-white/10 p-0 overflow-hidden">
+          <DialogHeader className="sr-only">
+            <DialogTitle>View Photo</DialogTitle>
+          </DialogHeader>
+          {selectedImage && (
+            <div className="relative aspect-square w-full">
+              <img 
+                src={selectedImage} 
+                alt="Enlarged gallery photo" 
+                className="w-full h-full object-contain"
+              />
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </main>
   )
 }
