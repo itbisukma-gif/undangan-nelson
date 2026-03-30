@@ -20,21 +20,21 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
 
   return (
     <section id={id} className="relative h-screen w-full flex flex-col justify-end overflow-hidden snap-start bg-black">
-      {/* Background Layer */}
+      {/* Background Layer with Parallax Effect Hint */}
       <div className="absolute inset-0 z-0">
         {bgImage && (
           <Image
             src={bgImage.imageUrl}
             alt={bgImage.description}
             fill
-            className="object-cover transition-transform duration-1000 hover:scale-110"
+            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.4]"
             priority
             data-ai-hint={bgImage.imageHint}
           />
         )}
         {/* Soft Vignette Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black" />
-        <div className="absolute inset-0 bg-black/30 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-transparent to-black" />
+        <div className="absolute inset-0 bg-black/20" />
       </div>
 
       {/* Content Area with Double Fade Effect */}
@@ -42,27 +42,27 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
         "relative z-10 w-full flex flex-col",
         isFull ? "h-full justify-center" : "h-full justify-end"
       )}>
-        {/* Top Fade Gradient */}
-        <div className="absolute top-0 left-0 right-0 h-32 bg-gradient-to-b from-black to-transparent pointer-events-none z-20" />
+        {/* Top Fade Gradient for Smoothness */}
+        <div className="absolute top-0 left-0 right-0 h-40 bg-gradient-to-b from-black to-transparent pointer-events-none z-20" />
         
         <motion.div
-          initial={{ y: 60, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: false, margin: "-50px" }}
-          transition={{ duration: 1, ease: "easeOut" }}
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: false, margin: "-100px" }}
+          transition={{ duration: 1.2 }}
           className={cn(
-            "relative w-full no-scrollbar px-8 pt-20 pb-40 bg-gradient-to-t from-black via-black/80 to-transparent",
-            isFull ? "h-full flex flex-col justify-center items-center pb-32" : "max-h-[70vh] overflow-y-auto",
+            "relative w-full no-scrollbar px-10 pt-24 pb-48",
+            isFull ? "h-full flex flex-col justify-center items-center pb-32" : "max-h-[75vh] overflow-y-auto",
             className
           )}
         >
-          <div className={cn("mx-auto space-y-8", isFull ? "w-full max-w-5xl" : "max-w-md")}>
+          <div className={cn("mx-auto", isFull ? "w-full max-w-5xl" : "max-w-md")}>
             {children}
           </div>
         </motion.div>
 
-        {/* Bottom Fade Gradient */}
-        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-black to-transparent pointer-events-none z-20" />}
+        {/* Bottom Fade Gradient to anchor the NavigationPill visually */}
+        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black via-black/90 to-transparent pointer-events-none z-20" />}
       </div>
     </section>
   )
