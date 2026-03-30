@@ -40,6 +40,7 @@ import {
 } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
+import { PlaceHolderImages } from "@/lib/placeholder-images"
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
@@ -110,8 +111,8 @@ export default function Home() {
     { id: 2, url: "/Background/Page_2.png" },
     { id: 3, url: "/Background/Page_3.png" },
     { id: 4, url: "/Background/Page_4.png" },
-    { id: 5, url: "/Background/Page_6.png" },
-    { id: 6, url: "/Background/Page_7.png" },
+    { id: 6, url: "/Background/Page_6.png" },
+    { id: 7, url: "/Background/Page_7.png" },
   ]
 
   useEffect(() => {
@@ -176,6 +177,8 @@ export default function Home() {
     }
   }
 
+  const coverBg = PlaceHolderImages.find(img => img.id === 'cover-bg')
+
   return (
     <main className="bg-black text-white selection:bg-white selection:text-black">
       <audio
@@ -194,6 +197,24 @@ export default function Home() {
             transition={{ duration: 1.2, ease: [0.77, 0, 0.175, 1] }}
             className="fixed inset-0 z-[100] flex flex-col items-center justify-center bg-black overflow-hidden"
           >
+            {/* Background Layer with Dim and Blur */}
+            <motion.div 
+              className="absolute inset-0 z-0"
+              initial={{ scale: 1.1, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 2.5 }}
+            >
+              {coverBg && (
+                <Image
+                  src={coverBg.imageUrl}
+                  alt={coverBg.description}
+                  fill
+                  className="object-cover brightness-[0.25] blur-[2px]"
+                  priority
+                />
+              )}
+            </motion.div>
+
             <div className="relative z-10 w-full max-w-lg text-center px-8 flex flex-col items-center justify-center">
               <motion.div
                 initial={{ opacity: 0, letterSpacing: "1em" }}

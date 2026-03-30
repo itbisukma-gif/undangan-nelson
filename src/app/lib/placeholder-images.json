@@ -1,10 +1,11 @@
+
 {
   "placeholderImages": [
     {
       "id": "cover-bg",
-      "description": "Elegant wedding decoration",
-      "imageUrl": "https://picsum.photos/seed/wedding_cover/1080/1920",
-      "imageHint": "wedding decoration"
+      "description": "Halaman Sampul Background",
+      "imageUrl": "/Background/Page_3.png",
+      "imageHint": "wedding cover"
     },
     {
       "id": "welcome-bg",
@@ -38,9 +39,9 @@
     },
     {
       "id": "gallery-bg",
-      "description": "Happy couple laughing",
-      "imageUrl": "https://picsum.photos/seed/wedding4/1080/1920",
-      "imageHint": "happy couple"
+      "description": "Galeri Utama Background",
+      "imageUrl": "/Background/Page_4.png",
+      "imageHint": "wedding gallery"
     },
     {
       "id": "gift-bg",
