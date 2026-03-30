@@ -27,7 +27,7 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
             src={bgImage.imageUrl}
             alt={bgImage.description}
             fill
-            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.6] blur-[2px] scale-105"
+            className="object-cover transition-transform duration-[2000ms] hover:scale-105 brightness-[0.7] blur-[3px] scale-110"
             priority
             data-ai-hint={bgImage.imageHint}
           />
@@ -40,10 +40,10 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
         isFull ? "h-full justify-center" : "h-full justify-end"
       )}>
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, margin: "-100px" }}
-          transition={{ duration: 1.2 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
           className={cn(
             "relative w-full no-scrollbar px-10 pt-24 pb-48",
             isFull ? "h-full flex flex-col justify-center items-center pb-32" : "max-h-[75vh] overflow-y-auto",
@@ -55,8 +55,8 @@ export function WeddingSection({ id, bgImageId, children, className, isFull = fa
           </div>
         </motion.div>
 
-        {/* Bottom Fade Gradient hanya untuk area navigasi agar tetap terbaca */}
-        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black via-black/60 to-transparent pointer-events-none z-20" />}
+        {/* Bottom Fade Gradient for navigation readability */}
+        {!isFull && <div className="absolute bottom-0 left-0 right-0 h-48 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none z-20" />}
       </div>
     </section>
   )
