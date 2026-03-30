@@ -6,11 +6,12 @@ import { motion } from "framer-motion"
 import { Heart, Users, Calendar, History, ImageIcon, Gift, Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 
+// Urutan item navigasi yang disinkronkan dengan urutan seksi di page.tsx
 const navItems = [
   { id: "welcome", icon: Heart, label: "Welcome" },
   { id: "couple", icon: Users, label: "Mempelai" },
-  { id: "event", icon: Calendar, label: "Acara" },
   { id: "story", icon: History, label: "Kisah" },
+  { id: "event", icon: Calendar, label: "Acara" },
   { id: "gallery", icon: ImageIcon, label: "Galeri" },
   { id: "gift", icon: Gift, label: "Hadiah" },
   { id: "rsvp", icon: Send, label: "RSVP" },
@@ -22,8 +23,9 @@ export function NavigationPill() {
   React.useEffect(() => {
     const observerOptions = {
       root: null,
-      rootMargin: "-45% 0px -45% 0px",
-      threshold: 0,
+      // Margin diatur agar deteksi terjadi tepat saat seksi berada di tengah layar
+      rootMargin: "-20% 0px -20% 0px",
+      threshold: 0.2,
     }
 
     const observerCallback = (entries: IntersectionObserverEntry[]) => {
@@ -48,6 +50,7 @@ export function NavigationPill() {
     const element = document.getElementById(id)
     if (element) {
       element.scrollIntoView({ behavior: "smooth" })
+      setActiveTab(id)
     }
   }
 
@@ -57,7 +60,7 @@ export function NavigationPill() {
         initial={{ y: 50, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 1, ease: [0.21, 0.47, 0.32, 0.98] }}
-        className="flex items-center gap-1.5 bg-black/40 backdrop-blur-2xl border border-white/10 p-2 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto"
+        className="flex items-center gap-1 bg-black/40 backdrop-blur-2xl border border-white/10 p-1.5 rounded-full shadow-[0_20px_50px_rgba(0,0,0,0.5)] pointer-events-auto overflow-hidden"
       >
         {navItems.map((item) => {
           const Icon = item.icon
@@ -67,15 +70,15 @@ export function NavigationPill() {
               key={item.id}
               onClick={() => scrollToSection(item.id)}
               className={cn(
-                "relative flex items-center justify-center w-11 h-11 md:w-14 md:h-14 rounded-full transition-all outline-none group",
+                "relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full transition-all outline-none group",
                 isActive ? "text-black" : "text-white/40 hover:text-white"
               )}
             >
               {isActive && (
                 <motion.div
                   layoutId="active-pill"
-                  className="absolute inset-0 bg-white shadow-[0_0_20px_rgba(255,255,255,0.3)] rounded-full"
-                  transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                  className="absolute inset-0 bg-white shadow-[0_0_15px_rgba(255,255,255,0.4)] rounded-full"
+                  transition={{ type: "spring", stiffness: 350, damping: 25 }}
                 />
               )}
               <Icon className={cn(

@@ -28,7 +28,9 @@ import {
   Volume2,
   VolumeX,
   Copy,
-  Check
+  Check,
+  Users,
+  ImageIcon
 } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
@@ -224,7 +226,33 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 3. Event Section */}
+        {/* 3. Story Timeline */}
+        <WeddingSection id="story" bgImageId="story-bg">
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-12">
+            <motion.div variants={fadeInUp} className="text-center mb-4">
+              <History className="w-8 h-8 mx-auto mb-6 text-white/30" />
+              <h2 className="text-4xl font-headline italic">Kisah Kami</h2>
+            </motion.div>
+            
+            <div className="space-y-16 relative before:absolute before:left-0 before:top-4 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-white/40 before:to-transparent pl-8">
+              <motion.div variants={fadeInUp} className="relative">
+                <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2020</span>
+                <h3 className="text-2xl font-headline italic mb-2">Pertemuan Pertama</h3>
+                <p className="text-white/60 text-sm leading-relaxed font-body">Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat secangkir kopi dan percakapan sederhana yang tak berujung.</p>
+              </motion.div>
+              
+              <motion.div variants={fadeInUp} className="relative">
+                <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white/40 border border-white/20" />
+                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2023</span>
+                <h3 className="text-2xl font-headline italic mb-2">Tumbuh Bersama</h3>
+                <p className="text-white/60 text-sm leading-relaxed font-body">Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain.</p>
+              </motion.div>
+            </div>
+          </motion.div>
+        </WeddingSection>
+
+        {/* 4. Event Section */}
         <WeddingSection id="event" bgImageId="event-bg">
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-8 text-center">
             <motion.div variants={fadeInUp} className="mb-4">
@@ -274,33 +302,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 4. Story Timeline */}
-        <WeddingSection id="story" bgImageId="story-bg">
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-12">
-            <motion.div variants={fadeInUp} className="text-center mb-4">
-              <History className="w-8 h-8 mx-auto mb-6 text-white/30" />
-              <h2 className="text-4xl font-headline italic">Kisah Kami</h2>
-            </motion.div>
-            
-            <div className="space-y-16 relative before:absolute before:left-0 before:top-4 before:bottom-0 before:w-px before:bg-gradient-to-b before:from-white/40 before:to-transparent pl-8">
-              <motion.div variants={fadeInUp} className="relative">
-                <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2020</span>
-                <h3 className="text-2xl font-headline italic mb-2">Pertemuan Pertama</h3>
-                <p className="text-white/60 text-sm leading-relaxed font-body">Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat secangkir kopi dan percakapan sederhana yang tak berujung.</p>
-              </motion.div>
-              
-              <motion.div variants={fadeInUp} className="relative">
-                <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white/40 border border-white/20" />
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2023</span>
-                <h3 className="text-2xl font-headline italic mb-2">Tumbuh Bersama</h3>
-                <p className="text-white/60 text-sm leading-relaxed font-body">Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain.</p>
-              </motion.div>
-            </div>
-          </motion.div>
-        </WeddingSection>
-
-        {/* 5. Photo Gallery - Full Page optimized */}
+        {/* 5. Photo Gallery */}
         <WeddingSection id="gallery" bgImageId="gallery-bg" isFull>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10 w-full max-w-5xl px-6">
             <motion.h2 variants={fadeInUp} className="text-5xl md:text-7xl font-headline italic">
