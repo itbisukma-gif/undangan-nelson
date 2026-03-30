@@ -3,15 +3,17 @@
 
 import React from "react"
 import { motion } from "framer-motion"
-import { Heart, History, Send, ImageIcon } from "lucide-react"
+import { Heart, Users, Calendar, History, ImageIcon, Gift, Send } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-// Navigasi disusun berdasarkan urutan seksi di app/page.tsx
 const navItems = [
   { id: "welcome", icon: Heart, label: "Welcome" },
-  { id: "story", icon: History, label: "Our Story" },
+  { id: "couple", icon: Users, label: "Mempelai" },
+  { id: "event", icon: Calendar, label: "Acara" },
+  { id: "story", icon: History, label: "Kisah" },
+  { id: "gallery", icon: ImageIcon, label: "Galeri" },
+  { id: "gift", icon: Gift, label: "Kado" },
   { id: "rsvp", icon: Send, label: "RSVP" },
-  { id: "gallery", icon: ImageIcon, label: "Gallery" },
 ]
 
 export function NavigationPill() {
@@ -20,7 +22,6 @@ export function NavigationPill() {
   React.useEffect(() => {
     const observerOptions = {
       root: null,
-      // Deteksi aktif ketika seksi berada di area tengah layar (viewport)
       rootMargin: "-20% 0px -20% 0px",
       threshold: 0.5,
     }
@@ -66,7 +67,7 @@ export function NavigationPill() {
               key={item.id}
               onClick={() => scrollToSection(item.id)}
               className={cn(
-                "relative flex items-center justify-center w-12 h-12 rounded-full transition-colors outline-none",
+                "relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-full transition-colors outline-none",
                 isActive ? "text-black" : "text-white/70 hover:text-white"
               )}
             >
@@ -77,7 +78,7 @@ export function NavigationPill() {
                   transition={{ type: "spring", duration: 0.5 }}
                 />
               )}
-              <Icon className="relative z-10 w-5 h-5" />
+              <Icon className="relative z-10 w-4 h-4 md:w-5 md:h-5" />
               <span className="sr-only">{item.label}</span>
             </button>
           )

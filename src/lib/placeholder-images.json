@@ -1,10 +1,28 @@
 {
   "placeholderImages": [
     {
+      "id": "cover-bg",
+      "description": "Elegant wedding decoration",
+      "imageUrl": "https://picsum.photos/seed/wedding_cover/1080/1920",
+      "imageHint": "wedding decoration"
+    },
+    {
       "id": "welcome-bg",
       "description": "Elegant wedding couple posing",
       "imageUrl": "https://picsum.photos/seed/wedding1/1080/1920",
       "imageHint": "wedding couple"
+    },
+    {
+      "id": "couple-bg",
+      "description": "Floral aesthetic background",
+      "imageUrl": "https://picsum.photos/seed/wedding_floral/1080/1920",
+      "imageHint": "floral background"
+    },
+    {
+      "id": "event-bg",
+      "description": "Cathedral or church interior",
+      "imageUrl": "https://picsum.photos/seed/wedding_church/1080/1920",
+      "imageHint": "church interior"
     },
     {
       "id": "story-bg",
@@ -23,6 +41,12 @@
       "description": "Happy couple laughing",
       "imageUrl": "https://picsum.photos/seed/wedding4/1080/1920",
       "imageHint": "happy couple"
+    },
+    {
+      "id": "gift-bg",
+      "description": "Elegant gift box or envelope",
+      "imageUrl": "https://picsum.photos/seed/wedding_gift/1080/1920",
+      "imageHint": "gift box"
     }
   ]
 }
