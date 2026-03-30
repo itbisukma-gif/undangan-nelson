@@ -330,28 +330,43 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 3. Story Timeline - Slide Up Effect */}
+        {/* 3. Story Timeline - Redesigned Aesthetic */}
         <WeddingSection id="story" bgImageId="story-bg" bgVariants={bgSlideUp}>
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-12">
-            <motion.div variants={fadeInUp} className="text-center mb-4">
-              <History className="w-6 h-6 mx-auto mb-6 text-white/30" />
-              <h2 className="text-4xl font-headline italic">Kisah Kami</h2>
+          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-16">
+            <motion.div variants={fadeInUp} className="text-center">
+              <div className="inline-block px-4 py-1.5 mb-6 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
+                <History className="w-3.5 h-3.5 inline-block mr-2 text-white/60" />
+                <span className="text-[10px] uppercase tracking-[0.3em] font-body text-white/60">Our Journey</span>
+              </div>
+              <h2 className="text-4xl md:text-5xl font-headline italic">Kisah Kasih Kami</h2>
+              <div className="mt-4 h-px w-16 bg-gradient-to-r from-transparent via-white/30 to-transparent mx-auto" />
             </motion.div>
             
-            <div className="space-y-16 relative pl-8 before:absolute before:left-0 before:top-4 before:bottom-0 before:w-px before:bg-white/20">
-              <motion.div variants={fadeInUp} className="relative">
-                <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.5)]" />
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2020</span>
-                <h3 className="text-xl font-headline italic mb-2">Pertemuan Pertama</h3>
-                <p className="text-white/60 text-xs leading-relaxed font-body">Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat percakapan sederhana yang tak berujung.</p>
-              </motion.div>
-              
-              <motion.div variants={fadeInUp} className="relative">
-                <div className="absolute -left-[37px] top-1.5 w-4 h-4 rounded-full bg-white/40 border border-white/20" />
-                <span className="text-[10px] font-bold tracking-[0.3em] uppercase text-white/40 mb-2 block font-body">2023</span>
-                <h3 className="text-xl font-headline italic mb-2">Tumbuh Bersama</h3>
-                <p className="text-white/60 text-xs leading-relaxed font-body">Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain.</p>
-              </motion.div>
+            <div className="space-y-16 relative pl-10 before:absolute before:left-[5px] before:top-2 before:bottom-2 before:w-[1px] before:bg-gradient-to-b before:from-white/5 before:via-white/20 before:to-white/5">
+              {[
+                { year: "2020", title: "Pertemuan Pertama", desc: "Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat percakapan sederhana yang tak berujung. Sebuah awal yang tak disangka namun sangat berharga." },
+                { year: "2023", title: "Komitmen Bersama", desc: "Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain. Kami berjanji untuk saling menguatkan dalam setiap langkah." },
+                { year: "2025", title: "Lembaran Baru", desc: "Kini, kami bersiap melangkah ke gerbang pernikahan, mengikat janji suci di hadapan Tuhan dan keluarga tercinta untuk selamanya." }
+              ].map((item, index) => (
+                <motion.div key={index} variants={fadeInUp} className="relative group">
+                  {/* Marker */}
+                  <div className="absolute -left-[45px] top-1.5 flex items-center justify-center">
+                    <div className="w-2.5 h-2.5 rounded-full bg-white group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(255,255,255,0.8)]" />
+                    <div className="absolute w-6 h-6 rounded-full border border-white/10 group-hover:border-white/40 transition-colors animate-pulse" />
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="space-y-3">
+                    <span className="text-[11px] font-bold tracking-[0.4em] text-white/40 uppercase font-body group-hover:text-white/80 transition-colors">
+                      {item.year}
+                    </span>
+                    <h3 className="text-2xl font-headline italic group-hover:translate-x-1 transition-transform">{item.title}</h3>
+                    <p className="text-white/50 text-xs md:text-sm leading-relaxed font-body font-light italic max-w-xs">
+                      {item.desc}
+                    </p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </WeddingSection>
