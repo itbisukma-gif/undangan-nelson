@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
@@ -339,9 +338,11 @@ export default function Home() {
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
-                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putra dari Bpk. Fulan & Ibu Fulanah</p>
-                <Button variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
-                  <Instagram className="w-3.5 h-3.5" />
+                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putra ke-8 dari Bpk. A. Sianturi & Ibu D. br. Sinambela</p>
+                <Button asChild variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
+                  <a href="https://instagram.com/nelson_antury" target="_blank" rel="noopener noreferrer">
+                    <Instagram className="w-3.5 h-3.5" />
+                  </a>
                 </Button>
               </motion.div>
 
@@ -352,9 +353,11 @@ export default function Home() {
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2">Suni Manik</h3>
-                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putri dari Bpk. Polan & Ibu Polanah</p>
-                <Button variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
-                  <Instagram className="w-3.5 h-3.5" />
+                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putri ke-6 dari Bpk. M. Manik & Ibu L. br. Simangunsong</p>
+                <Button asChild variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
+                  <a href="https://instagram.com/suny_manik" target="_blank" rel="noopener noreferrer">
+                    <Instagram className="w-3.5 h-3.5" />
+                  </a>
                 </Button>
               </motion.div>
             </div>
