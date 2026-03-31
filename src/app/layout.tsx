@@ -21,6 +21,9 @@ const ptSans = PT_Sans({
 export const metadata: Metadata = {
   title: 'The Wedding of Nelson & Suni',
   description: 'Undangan Pernikahan Nelson Mandela Sianturi & Suni Manik - 18 April 2026',
+  icons: {
+    icon: '/favicon.png',
+  },
   openGraph: {
     title: 'The Wedding of Nelson & Suni',
     description: 'Undangan Pernikahan Nelson Mandela Sianturi & Suni Manik - 18 April 2026',
