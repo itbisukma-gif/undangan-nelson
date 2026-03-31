@@ -56,7 +56,7 @@ export default function Home() {
   
   const audioRef = useRef<HTMLAudioElement>(null)
 
-  // Mock data for wishes (can be replaced with Supabase later)
+  // Mock data for wishes
   const mockWishes = [
     { name: "Keluarga Sianturi", status: "Hadir", message: "Selamat menempuh hidup baru Nelson & Suni. Semoga diberkati senantiasa." },
     { name: "Sakti Manik", status: "Hadir", message: "Bahagia selalu ya kalian berdua sampai kakek nenek!" },
@@ -89,7 +89,7 @@ export default function Home() {
     visible: { opacity: 1, transition: { duration: 2.2 } }
   }
 
-  // Countdown Logic - Updated to 2026
+  // Countdown Logic to 2026-12-24
   useEffect(() => {
     const targetDate = new Date("2026-12-24T09:00:00").getTime()
     const timer = setInterval(() => {
@@ -335,7 +335,7 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="flex flex-col items-center text-center">
                 <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full p-1 border border-white/10 mb-6 group">
                   <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                    <img src="https://picsum.photos/seed/groom/600/600" alt="Nelson" className="w-full h-full object-cover" />
+                    <img src="/bride/male.svg" alt="Nelson" className="w-full h-full object-cover" />
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
@@ -348,7 +348,7 @@ export default function Home() {
               <motion.div variants={fadeInUp} className="flex flex-col items-center text-center">
                 <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full p-1 border border-white/10 mb-6 group">
                   <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                    <img src="https://picsum.photos/seed/bride/600/600" alt="Suni" className="w-full h-full object-cover" />
+                    <img src="/bride/female.svg" alt="Suni" className="w-full h-full object-cover" />
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2">Suni Manik</h3>
@@ -361,7 +361,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 3. Story Timeline - Updated with 2018 and 2026 */}
+        {/* 3. Story Timeline */}
         <WeddingSection id="story" bgImageId="story-bg" bgVariants={bgSlideUp}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-16">
             <motion.div variants={fadeInUp} className="text-center">
@@ -585,7 +585,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 8. Wishes Section (Ucapan & Buku Tamu) */}
+        {/* 8. Wishes Section */}
         <WeddingSection id="wishes" bgImageId="wishes-bg" bgVariants={bgZoomOut}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center space-y-10">
             <motion.div variants={fadeInUp}>
