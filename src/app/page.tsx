@@ -49,8 +49,7 @@ import {
   addDoc, 
   query, 
   orderBy, 
-  serverTimestamp,
-  Firestore
+  serverTimestamp
 } from "firebase/firestore"
 import { useFirestore, useCollection } from "@/firebase"
 import { errorEmitter } from '@/firebase/error-emitter'
@@ -81,7 +80,7 @@ export default function Home() {
 
   const { data: wishes, loading: loadingWishes } = useCollection(wishesQuery)
 
-  // Animation variants
+  // Animation variants with explicit types for TS compatibility
   const bgZoomOut: Variants = {
     hidden: { scale: 1.15, opacity: 0 },
     visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.21, 0.47, 0.32, 0.98] } }
@@ -126,17 +125,20 @@ export default function Home() {
     return () => clearInterval(timer)
   }, [])
 
+  // Handle Invitation Link Parameter
   useEffect(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search)
       const to = params.get("to")
       if (to) {
-        setGuestName(to)
-        setRsvpName(to)
+        const decodedName = decodeURIComponent(to.replace(/\+/g, ' '))
+        setGuestName(decodedName)
+        setRsvpName(decodedName)
       }
     }
   }, [])
 
+  // Audio visibility control
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!audioRef.current || !isOpen) return;
@@ -475,15 +477,6 @@ export default function Home() {
             <motion.div variants={fadeInUp}>
               <Card className="bg-glass rounded-[2rem] overflow-hidden border-white/10">
                 <CardContent className="p-8 space-y-10">
-                  <div className="space-y-4">
-                    <h3 className="text-xl font-headline italic text-white/90">Kanonisasi</h3>
-                    <p className="text-white/50 text-[11px] font-body italic tracking-wide">
-                      Peneguhan janji suci dan penyatuan kasih di hadapan Tuhan dan Jemaat.
-                    </p>
-                  </div>
-
-                  <div className="h-px bg-white/10 w-1/2 mx-auto" />
-
                   <div className="space-y-4">
                     <h3 className="text-xl font-headline italic text-white/90">Pemberkatan</h3>
                     <div className="space-y-3 text-white/60 text-[11px] font-body">
