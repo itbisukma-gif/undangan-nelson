@@ -47,6 +47,7 @@ export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [guestName, setGuestName] = useState("Tamu Undangan")
+  const [rsvpName, setRsvpName] = useState("")
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [copiedId, setCopiedId] = useState<string | null>(null)
@@ -108,7 +109,10 @@ export default function Home() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const to = params.get("to")
-    if (to) setGuestName(to)
+    if (to) {
+      setGuestName(to)
+      setRsvpName(to)
+    }
   }, [])
 
   const galleryImages = [
@@ -373,7 +377,6 @@ export default function Home() {
             </motion.div>
             
             <div className="space-y-16 relative pl-10">
-              {/* Vertical line - centered to the padding pl-10 (approx 20px) */}
               <div className="absolute left-[20px] top-2 bottom-2 w-[1px] bg-gradient-to-b from-white/5 via-white/20 to-white/5 -translate-x-1/2" />
               
               {[
@@ -382,7 +385,6 @@ export default function Home() {
                 { year: "2026", title: "Lembaran Baru", desc: "Kini, kami bersiap melangkah ke gerbang pernikahan, mengikat janji suci di hadapan Tuhan dan keluarga tercinta untuk selamanya." }
               ].map((item, index) => (
                 <motion.div key={index} variants={fadeInUp} className="relative group">
-                  {/* Point Marker - centered exactly on the line */}
                   <div className="absolute left-[-20px] top-1.5 -translate-x-1/2 flex items-center justify-center">
                     <div className="w-2.5 h-2.5 rounded-full bg-white group-hover:scale-125 transition-transform shadow-[0_0_10px_rgba(255,255,255,0.8)] relative z-10" />
                     <div className="absolute w-6 h-6 rounded-full border border-white/10 group-hover:border-white/40 transition-colors animate-pulse" />
@@ -473,7 +475,6 @@ export default function Home() {
             </motion.h2>
             
             <div className="flex flex-col lg:flex-row gap-8 items-center justify-center">
-              {/* Main Preview Container */}
               <motion.div 
                 variants={fadeInUp}
                 className="relative aspect-[4/5] w-full max-w-[300px] md:max-w-[420px] rounded-[2.5rem] overflow-hidden shadow-2xl border border-white/10 group cursor-pointer"
@@ -497,7 +498,6 @@ export default function Home() {
                 </div>
               </motion.div>
 
-              {/* Thumbnails */}
               <motion.div variants={fadeInUp} className="flex lg:flex-col gap-3 overflow-x-auto no-scrollbar py-4 px-2">
                 {galleryImages.map((img, idx) => (
                   <button
@@ -575,7 +575,12 @@ export default function Home() {
             </motion.div>
             
             <motion.div variants={fadeInUp} className="space-y-6 text-left bg-glass p-8 rounded-[2rem] border-white/10">
-              <Input placeholder="Nama Lengkap" className="bg-transparent border-white/10 h-14 rounded-xl text-white focus:ring-1 focus:ring-white/40 font-body text-xs" />
+              <Input 
+                placeholder="Nama Lengkap" 
+                value={rsvpName}
+                onChange={(e) => setRsvpName(e.target.value)}
+                className="bg-transparent border-white/10 h-14 rounded-xl text-white focus:ring-1 focus:ring-white/40 font-body text-xs" 
+              />
               <div className="flex gap-4">
                 <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body text-xs">Hadir</Button>
                 <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body text-xs">Absen</Button>
@@ -620,7 +625,6 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* Floating Controls */}
         <div className="fixed top-6 right-6 z-50">
           <button 
             onClick={() => setIsMuted(!isMuted)}
@@ -633,7 +637,6 @@ export default function Home() {
         <NavigationPill />
       </div>
 
-      {/* Image Preview Dialog */}
       <Dialog open={!!selectedImage} onOpenChange={() => setSelectedImage(null)}>
         <DialogContent className="max-w-4xl bg-black/95 border-white/10 p-0 overflow-hidden shadow-2xl rounded-[2.5rem]">
           <DialogHeader className="sr-only">
@@ -647,7 +650,6 @@ export default function Home() {
         </DialogContent>
       </Dialog>
 
-      {/* Location Dialog */}
       <Dialog open={isLocationOpen} onOpenChange={setIsLocationOpen}>
         <DialogContent className="bg-black/95 border border-white/10 text-white rounded-[2rem] max-w-md w-[95%] mx-auto p-6 shadow-2xl backdrop-blur-2xl max-h-[90vh] overflow-y-auto no-scrollbar">
           <DialogHeader className="mb-4">
