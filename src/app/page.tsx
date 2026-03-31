@@ -44,16 +44,7 @@ import {
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
-import { 
-  collection, 
-  addDoc, 
-  query, 
-  orderBy, 
-  serverTimestamp
-} from "firebase/firestore"
-import { useFirestore, useCollection } from "@/firebase"
-import { errorEmitter } from '@/firebase/error-emitter'
-import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors'
+import { useWishes } from "@/supabase/hooks/use-wishes"
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
@@ -71,40 +62,34 @@ export default function Home() {
   const { toast } = useToast()
   
   const audioRef = useRef<HTMLAudioElement>(null)
-  const firestore = useFirestore()
 
-  // Real-time Wishes from Firestore
-  const wishesQuery = useMemo(() => {
-    if (!firestore) return null
-    return query(collection(firestore, "wishes"), orderBy("createdAt", "desc"))
-  }, [firestore])
-
-  const { data: wishes, loading: loadingWishes } = useCollection(wishesQuery)
+  // Real-time Wishes from Supabase
+  const { wishes, loading: loadingWishes, addWish } = useWishes()
 
   // Animation variants
   const bgZoomOut: Variants = {
     hidden: { scale: 1.15, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.22, 1, 0.36, 1] } }
+    visible: { scale: 1, opacity: 1, transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSlideRight: Variants = {
     hidden: { x: "8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.4, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSlideUp: Variants = {
     hidden: { y: "10%", opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 2, ease: [0.22, 1, 0.36, 1] } }
+    visible: { y: 0, opacity: 1, transition: { duration: 1.6, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSlideLeft: Variants = {
     hidden: { x: "-8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.4, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgZoomIn: Variants = {
     hidden: { scale: 0.95, opacity: 0 },
-    visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: [0.22, 1, 0.36, 1] } }
+    visible: { scale: 1.05, opacity: 1, transition: { duration: 2.2, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSoftFade: Variants = {
     hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { duration: 2.2 } }
+    visible: { opacity: 1, transition: { duration: 1.6 } }
   }
 
   useEffect(() => {
@@ -192,8 +177,8 @@ export default function Home() {
     toast({ description: "Nomor rekening berhasil disalin." })
   }
 
-  const handleSendRSVP = () => {
-    if (!firestore || !rsvpName || !rsvpStatus || !rsvpMessage) {
+  const handleSendRSVP = async () => {
+    if (!rsvpName || !rsvpStatus || !rsvpMessage) {
       toast({
         variant: "destructive",
         title: "Data belum lengkap",
@@ -224,36 +209,26 @@ export default function Home() {
       name: rsvpName,
       status: rsvpStatus,
       message: rsvpMessage,
-      createdAt: serverTimestamp()
     }
 
-    const wishesRef = collection(firestore, "wishes")
+    const result = await addWish(wishData)
     
-    addDoc(wishesRef, wishData)
-      .then(() => {
-        setIsSending(false)
-        toast({
-          title: "Berhasil!",
-          description: `Terima kasih ${rsvpName}, konfirmasi dan ucapan Anda telah kami terima.`,
-        })
-        setRsvpMessage("")
-        setRsvpStatus(null)
+    if (result) {
+      setIsSending(false)
+      toast({
+        title: "Berhasil!",
+        description: `Terima kasih ${rsvpName}, konfirmasi dan ucapan Anda telah kami terima.`,
       })
-      .catch(async (error) => {
-        setIsSending(false)
-        const permissionError = new FirestorePermissionError({
-          path: wishesRef.path,
-          operation: 'create',
-          requestResourceData: wishData,
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit('permission-error', permissionError);
-        
-        toast({
-          variant: "destructive",
-          title: "Terjadi Kesalahan",
-          description: "Gagal mengirim konfirmasi. Silakan coba lagi nanti.",
-        })
+      setRsvpMessage("")
+      setRsvpStatus(null)
+    } else {
+      setIsSending(false)
+      toast({
+        variant: "destructive",
+        title: "Terjadi Kesalahan",
+        description: "Gagal mengirim konfirmasi. Silakan coba lagi nanti.",
       })
+    }
   }
 
   const staggerContainer: Variants = {
@@ -312,10 +287,10 @@ export default function Home() {
 
             <div className="relative z-10 w-full max-w-lg text-center px-8 flex flex-col items-center justify-center">
               <motion.div
-                initial={{ opacity: 0, letterSpacing: "1em" }}
-                animate={{ opacity: 1, letterSpacing: "0.4em" }}
+                initial={{ opacity: 0, letterSpacing: "0.5em" }}
+                animate={{ opacity: 1, letterSpacing: "0.3em" }}
                 transition={{ duration: 1.5 }}
-                className="font-body uppercase text-[10px] md:text-xs mb-8 text-white/60"
+                className="font-body text-[10px] md:text-xs mb-8 text-white/50 tracking-widest"
               >
                 Undangan Pernikahan
               </motion.div>
@@ -340,93 +315,32 @@ export default function Home() {
               >
                 <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.days}</span>
-                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Hari</span>
+                  <span className="text-[10px] tracking-wider opacity-40 font-body">Hari</span>
                 </div>
                 <div className="h-10 w-[1px] bg-white/10" />
                 <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.hours}</span>
-                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Jam</span>
+                  <span className="text-[10px] tracking-wider opacity-40 font-body">Jam</span>
                 </div>
                 <div className="h-10 w-[1px] bg-white/10" />
                 <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.minutes}</span>
-                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Menit</span>
+                  <span className="text-[10px] tracking-wider opacity-40 font-body">Menit</span>
                 </div>
                 <div className="h-10 w-[1px] bg-white/10" />
                 <div className="text-center min-w-[50px]">
                   <span className="block text-2xl md:text-4xl font-headline italic mb-1">{timeLeft.seconds}</span>
-                  <span className="text-[10px] uppercase tracking-widest opacity-40 font-body">Detik</span>
+                  <span className="text-[10px] tracking-wider opacity-40 font-body">Detik</span>
                 </div>
-              </motion.div>
-
-              <motion.div 
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 1.2, duration: 1 }}
-                className="mb-12"
-              >
-                <p className="font-body text-white/40 mb-3 text-[10px] italic tracking-widest uppercase">Eksklusif Untuk</p>
-                <h2 className="text-2xl md:text-4xl font-headline italic text-white/90">{guestName}</h2>
               </motion.div>
 
               <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 1.4, duration: 0.8 }}
+                transition={{ delay: 1.2, duration: 1 }}
+                className="mb-12"
               >
-                <Button 
-                  onClick={handleOpenInvitation}
-                  className="bg-white text-black hover:bg-white/90 rounded-full px-12 py-8 h-auto text-xs md:text-sm font-bold tracking-[0.3em] flex items-center gap-4 shadow-2xl transition-all active:scale-95 group"
-                >
-                  BUKA UNDANGAN
-                  <MailOpen className="w-4 h-4 group-hover:animate-float transition-transform" />
-                </Button>
-              </motion.div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className={cn(
-        "snap-y snap-mandatory h-screen overflow-y-scroll no-scrollbar scroll-smooth",
-        !isOpen && "hidden"
-      )}>
-        {/* 1. Welcome Section */}
-        <WeddingSection id="welcome" bgImageId="welcome-bg" bgVariants={bgZoomOut}>
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="text-center">
-            <motion.p variants={fadeInUp} className="text-white/50 uppercase tracking-[0.5em] text-[10px] mb-6 font-body">
-              The Wedding Of
-            </motion.p>
-            <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl mb-8 font-headline leading-tight italic">
-              Nelson & Suni
-              </motion.h1>
-            <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4">
-              <div className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-                <span className="text-lg tracking-[0.4em] font-body text-white/80">18 . 04 . 2026</span>
-              </div>
-            </motion.div>
-          </motion.div>
-        </WeddingSection>
-
-        {/* 2. Couple Section */}
-        <WeddingSection id="couple" bgImageId="couple-bg" bgVariants={bgSlideRight}>
-          <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-16">
-            <div className="text-center">
-              <motion.h2 variants={fadeInUp} className="text-4xl font-headline italic mb-4">Mempelai</motion.h2>
-              <motion.p variants={fadeInUp} className="text-white/40 text-[10px] font-body italic tracking-wide max-w-[250px] mx-auto leading-relaxed">
-                "Kasih itu sabar; kasih itu murah hati; ia tidak cemburu. Ia tidak memegahkan diri dan tidak sombong."
-              </motion.p>
-            </div>
-
-            <div className="grid gap-16 md:grid-cols-2 md:gap-8">
-              <motion.div variants={fadeInUp} className="flex flex-col items-center text-center">
-                <div className="relative w-40 h-40 md:w-48 md:h-48 rounded-full p-1 border border-white/10 mb-6 group">
-                  <div className="w-full h-full rounded-full overflow-hidden grayscale group-hover:grayscale-0 transition-all duration-700">
-                    <img src="/bride/male.svg" alt="Nelson" className="w-full h-full object-cover" />
-                  </div>
-                </div>
-                <h3 className="text-2xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
-                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putra ke-8 dari Bapak A. Sianturi dan Ibu D. br. Sinambela</p>
+                <p className="text-white/50 text-[10px] font-body mb-4 tracking-wider">Putra ke-8 dari Bapak A. Sianturi dan Ibu D. br. Sinambela</p>
                 <Button asChild variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
                   <a href="https://instagram.com/nelson_antury" target="_blank" rel="noopener noreferrer">
                     <Instagram className="w-3.5 h-3.5" />
@@ -441,7 +355,7 @@ export default function Home() {
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2">Suni Manik</h3>
-                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putri ke-6 dari Bapak M. Manik dan Ibu L. br. Simangunsong</p>
+                <p className="text-white/50 text-[10px] font-body mb-4 tracking-wider">Putri ke-6 dari Bapak M. Manik dan Ibu L. br. Simangunsong</p>
                 <Button asChild variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
                   <a href="https://instagram.com/suny_manik" target="_blank" rel="noopener noreferrer">
                     <Instagram className="w-3.5 h-3.5" />
@@ -458,7 +372,7 @@ export default function Home() {
             <motion.div variants={fadeInUp} className="text-center">
               <div className="inline-block px-4 py-1.5 mb-6 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
                 <History className="w-3.5 h-3.5 inline-block mr-2 text-white/60" />
-                <span className="text-[10px] uppercase tracking-[0.3em] font-body text-white/60">Our Journey</span>
+                <span className="text-[10px] tracking-wider font-body text-white/60">Our Journey</span>
               </div>
               <h2 className="text-4xl md:text-5xl font-headline italic">Kisah Kasih Kami</h2>
               <div className="mt-4 h-px w-16 bg-gradient-to-r from-transparent via-white/30 to-transparent mx-auto" />
@@ -479,7 +393,7 @@ export default function Home() {
                   </div>
                   
                   <div className="space-y-3">
-                    <span className="text-[11px] font-bold tracking-[0.4em] text-white/40 uppercase font-body group-hover:text-white/80 transition-colors">
+                    <span className="text-[11px] font-bold tracking-wider text-white/40 font-body group-hover:text-white/80 transition-colors">
                       {item.year}
                     </span>
                     <h3 className="text-2xl font-headline italic group-hover:translate-x-1 transition-transform">{item.title}</h3>
@@ -509,11 +423,11 @@ export default function Home() {
                     <div className="space-y-3 text-white/60 text-[11px] font-body">
                       <div className="flex items-center justify-center gap-3">
                         <Clock className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">09.00 - 11.00 WIB</span>
+                        <span className="tracking-wider">09.00 - 11.00 WIB</span>
                       </div>
                       <div className="flex items-center justify-center gap-3">
                         <Calendar className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">Sabtu, 18 April 2026</span>
+                        <span className="tracking-wider">Sabtu, 18 April 2026</span>
                       </div>
                     </div>
                   </div>
@@ -525,20 +439,20 @@ export default function Home() {
                     <div className="space-y-3 text-white/60 text-[11px] font-body">
                       <div className="flex items-center justify-center gap-3">
                         <Clock className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">12.00 - Selesai</span>
+                        <span className="tracking-wider">12.00 - Selesai</span>
                       </div>
                       <div className="flex items-center justify-center gap-3">
                         <MapPin className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">{`Lumban Pinasa, Desa Gonting Garoga, Kec. Garoga`}</span>
+                        <span className="tracking-wider">{`Lumban Pinasa, Desa Gonting Garoga, Kec. Garoga`}</span>
                       </div>
                     </div>
                   </div>
 
                   <Button 
                     onClick={() => setIsLocationOpen(true)}
-                    className="w-full bg-white text-black hover:bg-white/90 font-bold tracking-[0.2em] h-14 rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
+                    className="w-full bg-white text-black hover:bg-white/90 font-bold tracking-wider h-14 rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
                   >
-                    PETUNJUK LOKASI <MapPin className="ml-2 w-3.5 h-3.5" />
+                    Petunjuk Lokasi <MapPin className="ml-2 w-3.5 h-3.5" />
                   </Button>
                 </CardContent>
               </Card>
@@ -609,7 +523,7 @@ export default function Home() {
             <div className="grid gap-6">
               <motion.div variants={fadeInUp}>
                 <div className="p-8 rounded-[2rem] bg-glass border-white/10">
-                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Rakyat Indonesia (BRI)</p>
+                  <p className="font-bold text-[9px] tracking-wider mb-4 opacity-70 font-body">Bank Rakyat Indonesia (BRI)</p>
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <p className="text-xl md:text-3xl font-mono tracking-tighter">779701009947530</p>
                     <Button 
@@ -621,12 +535,12 @@ export default function Home() {
                       {copiedId === "bri" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
-                  <p className="text-white/40 text-[9px] uppercase tracking-widest font-body">a.n Nelson Mandela Sianturi</p>
+                  <p className="text-white/40 text-[9px] tracking-wider font-body">a.n Nelson Mandela Sianturi</p>
                 </div>
               </motion.div>
               <motion.div variants={fadeInUp}>
                 <div className="p-8 rounded-[2rem] bg-glass border-white/10">
-                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Negara Indonesia (BNI)</p>
+                  <p className="font-bold text-[9px] tracking-wider mb-4 opacity-70 font-body">Bank Negara Indonesia (BNI)</p>
                   <div className="flex items-center justify-between gap-4 mb-4">
                     <p className="text-xl md:text-3xl font-mono tracking-tighter">1977860504</p>
                     <Button 
@@ -638,7 +552,7 @@ export default function Home() {
                       {copiedId === "bni" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
-                  <p className="text-white/40 text-[9px] uppercase tracking-widest font-body">a.n Nelson Mandela Sianturi</p>
+                  <p className="text-white/40 text-[9px] tracking-wider font-body">a.n Nelson Mandela Sianturi</p>
                 </div>
               </motion.div>
             </div>
@@ -691,12 +605,12 @@ export default function Home() {
               <Button 
                 onClick={handleSendRSVP}
                 disabled={isSending}
-                className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
+                className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-wider rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
               >
                 {isSending ? (
-                  <>MENGIRIM... <Loader2 className="ml-2 w-4 h-4 animate-spin" /></>
+                  <>Mengirim... <Loader2 className="ml-2 w-4 h-4 animate-spin" /></>
                 ) : (
-                  <>KIRIM KONFIRMASI <Send className="ml-2 w-4 h-4" /></>
+                  <>Kirim Konfirmasi <Send className="ml-2 w-4 h-4" /></>
                 )}
               </Button>
             </motion.div>

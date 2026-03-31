@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { Playfair_Display, PT_Sans } from 'next/font/google'
-import { FirebaseClientProvider } from '@/firebase/client-provider'
+import { AuthProvider } from '@/supabase/auth/use-auth'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -21,6 +21,9 @@ const ptSans = PT_Sans({
 export const metadata: Metadata = {
   title: 'The Wedding of Nelson & Suni',
   description: 'Undangan Pernikahan Nelson Mandela Sianturi & Suni Manik - 18 April 2026',
+  icons: {
+    icon: '/favicon.png',
+  },
   openGraph: {
     title: 'The Wedding of Nelson & Suni',
     description: 'Undangan Pernikahan Nelson Mandela Sianturi & Suni Manik - 18 April 2026',
@@ -50,10 +53,10 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${playfair.variable} ${ptSans.variable} dark scroll-smooth`}>
       <body className="font-body antialiased selection:bg-white selection:text-black overflow-x-hidden">
-        <FirebaseClientProvider>
+        <AuthProvider>
           {children}
           <Toaster />
-        </FirebaseClientProvider>
+        </AuthProvider>
       </body>
     </html>
   );
