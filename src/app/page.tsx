@@ -1,6 +1,7 @@
+
 "use client"
 
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect, useRef, useMemo } from "react"
 import { motion, AnimatePresence, Variants } from "framer-motion"
 import { WeddingSection } from "@/components/WeddingSection"
 import { NavigationPill } from "@/components/NavigationPill"
@@ -43,12 +44,25 @@ import {
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
+import { 
+  collection, 
+  addDoc, 
+  query, 
+  orderBy, 
+  serverTimestamp,
+  Firestore
+} from "firebase/firestore"
+import { useFirestore, useCollection } from "@/firebase"
+import { errorEmitter } from '@/firebase/error-emitter'
+import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors'
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
   const [isMuted, setIsMuted] = useState(false)
   const [guestName, setGuestName] = useState("Tamu Undangan")
   const [rsvpName, setRsvpName] = useState("")
+  const [rsvpStatus, setRsvpStatus] = useState<"Hadir" | "Absen" | null>(null)
+  const [rsvpMessage, setRsvpMessage] = useState("")
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [copiedId, setCopiedId] = useState<string | null>(null)
@@ -57,15 +71,17 @@ export default function Home() {
   const { toast } = useToast()
   
   const audioRef = useRef<HTMLAudioElement>(null)
+  const firestore = useFirestore()
 
-  const mockWishes = [
-    { name: "Keluarga Sianturi", status: "Hadir", message: "Selamat menempuh hidup baru Nelson & Suni. Semoga diberkati senantiasa dalam kasih Tuhan." },
-    { name: "Sakti Manik", status: "Hadir", message: "Bahagia selalu ya kalian berdua sampai kakek nenek! Lancar acaranya." },
-    { name: "Punguan Pomparan", status: "Hadir", message: "Selamat berbagia Nelson & Suni. Tuhan Yesus memberkati rumah tangga kalian." },
-    { name: "Rina & Teman-teman", status: "Hadir", message: "Selamat ya! Lancar-lancar acaranya sampai hari H. Can't wait!" }
-  ]
+  // Real-time Wishes from Firestore
+  const wishesQuery = useMemo(() => {
+    if (!firestore) return null
+    return query(collection(firestore, "wishes"), orderBy("createdAt", "desc"))
+  }, [firestore])
 
-  // Animation variants with correct easing types to satisfy TS
+  const { data: wishes, loading: loadingWishes } = useCollection(wishesQuery)
+
+  // Animation variants
   const bgZoomOut: Variants = {
     hidden: { scale: 1.15, opacity: 0 },
     visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.21, 0.47, 0.32, 0.98] } }
@@ -121,25 +137,19 @@ export default function Home() {
     }
   }, [])
 
-  // Auto-pause audio when tab is inactive
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!audioRef.current || !isOpen) return;
-
       if (document.hidden) {
         audioRef.current.pause();
       } else {
-        // Only resume if not muted
         if (!isMuted) {
           audioRef.current.play().catch(err => console.log("Playback interrupted:", err));
         }
       }
     };
-
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
+    return () => document.removeEventListener("visibilitychange", handleVisibilityChange);
   }, [isOpen, isMuted]);
 
   const galleryImages = [
@@ -168,9 +178,7 @@ export default function Home() {
   const handleOpenInvitation = () => {
     setIsOpen(true)
     if (audioRef.current) {
-      audioRef.current.play().catch((error) => {
-        console.log("Autoplay blocked:", error)
-      })
+      audioRef.current.play().catch((error) => console.log("Autoplay blocked:", error))
     }
   }
 
@@ -178,26 +186,52 @@ export default function Home() {
     navigator.clipboard.writeText(text.replace(/\s/g, ''))
     setCopiedId(id)
     setTimeout(() => setCopiedId(null), 2000)
-    toast({
-      description: "Nomor rekening berhasil disalin.",
-    })
+    toast({ description: "Nomor rekening berhasil disalin." })
   }
 
   const handleSendRSVP = () => {
-    toast({
-      title: "Konfirmasi Terkirim",
-      description: `Terima kasih ${rsvpName}, konfirmasi Anda telah kami terima.`,
-    })
+    if (!firestore || !rsvpName || !rsvpStatus || !rsvpMessage) {
+      toast({
+        variant: "destructive",
+        title: "Data belum lengkap",
+        description: "Mohon lengkapi nama, status kehadiran, dan ucapan Anda.",
+      })
+      return
+    }
+
+    const wishData = {
+      name: rsvpName,
+      status: rsvpStatus,
+      message: rsvpMessage,
+      createdAt: serverTimestamp()
+    }
+
+    const wishesRef = collection(firestore, "wishes")
+    
+    addDoc(wishesRef, wishData)
+      .then(() => {
+        toast({
+          title: "Konfirmasi Terkirim",
+          description: `Terima kasih ${rsvpName}, ucapan Anda telah kami terima.`,
+        })
+        setRsvpMessage("")
+        setRsvpStatus(null)
+      })
+      .catch(async (error) => {
+        const permissionError = new FirestorePermissionError({
+          path: wishesRef.path,
+          operation: 'create',
+          requestResourceData: wishData,
+        } satisfies SecurityRuleContext);
+        errorEmitter.emit('permission-error', permissionError);
+      })
   }
 
   const staggerContainer: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.3
-      }
+      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
     }
   }
 
@@ -607,10 +641,33 @@ export default function Home() {
                 className="bg-transparent border-white/10 h-14 rounded-xl text-white focus:ring-1 focus:ring-white/40 font-body text-xs" 
               />
               <div className="flex gap-4">
-                <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body text-xs">Hadir</Button>
-                <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body text-xs">Absen</Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setRsvpStatus("Hadir")}
+                  className={cn(
+                    "flex-1 bg-white/5 border-white/10 h-14 rounded-xl transition-all font-body text-xs",
+                    rsvpStatus === "Hadir" && "bg-white text-black border-white"
+                  )}
+                >
+                  Hadir
+                </Button>
+                <Button 
+                  variant="outline" 
+                  onClick={() => setRsvpStatus("Absen")}
+                  className={cn(
+                    "flex-1 bg-white/5 border-white/10 h-14 rounded-xl transition-all font-body text-xs",
+                    rsvpStatus === "Absen" && "bg-white text-black border-white"
+                  )}
+                >
+                  Absen
+                </Button>
               </div>
-              <Textarea placeholder="Pesan & Harapan..." className="bg-transparent border-white/10 min-h-[120px] rounded-xl focus:ring-1 focus:ring-white/40 font-body text-xs" />
+              <Textarea 
+                placeholder="Pesan & Harapan..." 
+                value={rsvpMessage}
+                onChange={(e) => setRsvpMessage(e.target.value)}
+                className="bg-transparent border-white/10 min-h-[120px] rounded-xl focus:ring-1 focus:ring-white/40 font-body text-xs" 
+              />
               <Button 
                 onClick={handleSendRSVP}
                 className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
@@ -631,24 +688,33 @@ export default function Home() {
             </motion.div>
             
             <motion.div variants={fadeInUp} className="space-y-4 max-h-[50vh] overflow-y-auto pr-2 no-scrollbar">
-              {mockWishes.map((wish, idx) => (
-                <div key={idx} className="p-6 rounded-2xl bg-glass border-white/10 text-left space-y-3">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
-                        <User2 className="w-4 h-4 text-white/40" />
+              {loadingWishes ? (
+                <div className="py-10 text-white/40 text-xs italic">Memuat ucapan...</div>
+              ) : wishes && wishes.length > 0 ? (
+                wishes.map((wish, idx) => (
+                  <div key={idx} className="p-6 rounded-2xl bg-glass border-white/10 text-left space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                          <User2 className="w-4 h-4 text-white/40" />
+                        </div>
+                        <p className="text-sm font-headline italic text-white/90">{wish.name}</p>
                       </div>
-                      <p className="text-sm font-headline italic text-white/90">{wish.name}</p>
+                      <span className={cn(
+                        "text-[9px] uppercase tracking-widest font-bold px-2 py-1 rounded-md",
+                        wish.status === "Hadir" ? "text-green-400 bg-green-400/10" : "text-red-400 bg-red-400/10"
+                      )}>
+                        {wish.status}
+                      </span>
                     </div>
-                    <span className="text-[9px] uppercase tracking-widest text-green-400 font-bold bg-green-400/10 px-2 py-1 rounded-md">
-                      {wish.status}
-                    </span>
+                    <p className="text-xs text-white/60 font-body italic leading-relaxed">
+                      "{wish.message}"
+                    </p>
                   </div>
-                  <p className="text-xs text-white/60 font-body italic leading-relaxed">
-                    "{wish.message}"
-                  </p>
-                </div>
-              ))}
+                ))
+              ) : (
+                <div className="py-10 text-white/40 text-xs italic">Belum ada ucapan. Jadilah yang pertama!</div>
+              )}
             </motion.div>
           </motion.div>
         </WeddingSection>

@@ -1,0 +1,40 @@
+
+{
+  "entities": {
+    "Wish": {
+      "title": "Ucapan Tamu",
+      "description": "Pesan dan konfirmasi kehadiran dari tamu undangan.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Nama tamu"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Hadir", "Absen"],
+          "description": "Status kehadiran"
+        },
+        "message": {
+          "type": "string",
+          "description": "Pesan atau doa"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Waktu pengiriman"
+        }
+      },
+      "required": ["name", "status", "message", "createdAt"]
+    }
+  },
+  "auth": {
+    "providers": ["anonymous"]
+  },
+  "firestore": {
+    "/wishes/{wishId}": {
+      "schema": "Wish",
+      "description": "Koleksi ucapan dan konfirmasi kehadiran tamu."
+    }
+  }
+}

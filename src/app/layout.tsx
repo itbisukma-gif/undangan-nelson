@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 import { Playfair_Display, PT_Sans } from 'next/font/google'
+import { FirebaseClientProvider } from '@/firebase/client-provider'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -49,8 +50,10 @@ export default function RootLayout({
   return (
     <html lang="id" className={`${playfair.variable} ${ptSans.variable} dark scroll-smooth`}>
       <body className="font-body antialiased selection:bg-white selection:text-black overflow-x-hidden">
-        {children}
-        <Toaster />
+        <FirebaseClientProvider>
+          {children}
+          <Toaster />
+        </FirebaseClientProvider>
       </body>
     </html>
   );
