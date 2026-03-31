@@ -87,7 +87,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    const targetDate = new Date("2026-12-24T09:00:00").getTime()
+    const targetDate = new Date("2026-04-18T09:00:00").getTime()
     const timer = setInterval(() => {
       const now = new Date().getTime()
       const difference = targetDate - now
@@ -310,7 +310,7 @@ export default function Home() {
               </motion.h1>
             <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4">
               <div className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-                <span className="text-lg tracking-[0.4em] font-body text-white/80">24 . 12 . 2026</span>
+                <span className="text-lg tracking-[0.4em] font-body text-white/80">18 . 04 . 2026</span>
               </div>
             </motion.div>
           </motion.div>
@@ -432,7 +432,7 @@ export default function Home() {
                       </div>
                       <div className="flex items-center justify-center gap-3">
                         <Calendar className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">Minggu, 24 Desember 2026</span>
+                        <span className="tracking-widest uppercase">Sabtu, 18 April 2026</span>
                       </div>
                     </div>
                   </div>
