@@ -68,23 +68,23 @@ export default function Home() {
   // Animation variants with correct easing types to satisfy TS
   const bgZoomOut: Variants = {
     hidden: { scale: 1.15, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: "easeOut" } }
+    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.21, 0.47, 0.32, 0.98] } }
   }
   const bgSlideRight: Variants = {
     hidden: { x: "8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.21, 0.47, 0.32, 0.98] } }
   }
   const bgSlideUp: Variants = {
     hidden: { y: "10%", opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 2, ease: "easeOut" } }
+    visible: { y: 0, opacity: 1, transition: { duration: 2, ease: [0.21, 0.47, 0.32, 0.98] } }
   }
   const bgSlideLeft: Variants = {
     hidden: { x: "-8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.21, 0.47, 0.32, 0.98] } }
   }
   const bgZoomIn: Variants = {
     hidden: { scale: 0.95, opacity: 0 },
-    visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: "easeOut" } }
+    visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: [0.21, 0.47, 0.32, 0.98] } }
   }
   const bgSoftFade: Variants = {
     hidden: { opacity: 0 },
@@ -120,6 +120,27 @@ export default function Home() {
       }
     }
   }, [])
+
+  // Auto-pause audio when tab is inactive
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (!audioRef.current || !isOpen) return;
+
+      if (document.hidden) {
+        audioRef.current.pause();
+      } else {
+        // Only resume if not muted
+        if (!isMuted) {
+          audioRef.current.play().catch(err => console.log("Playback interrupted:", err));
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [isOpen, isMuted]);
 
   const galleryImages = [
     { id: 1, url: "/Background/Page_1.png" },
