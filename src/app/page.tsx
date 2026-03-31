@@ -89,9 +89,9 @@ export default function Home() {
     visible: { opacity: 1, transition: { duration: 2.2 } }
   }
 
-  // Countdown Logic
+  // Countdown Logic - Updated to 2026
   useEffect(() => {
-    const targetDate = new Date("2025-12-24T09:00:00").getTime()
+    const targetDate = new Date("2026-12-24T09:00:00").getTime()
     const timer = setInterval(() => {
       const now = new Date().getTime()
       const difference = targetDate - now
@@ -312,10 +312,10 @@ export default function Home() {
             </motion.p>
             <motion.h1 variants={fadeInUp} className="text-5xl md:text-7xl mb-8 font-headline leading-tight italic">
               Nelson & Suni
-            </motion.h1>
+              </motion.h1>
             <motion.div variants={fadeInUp} className="flex flex-col items-center gap-4">
               <div className="px-6 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm">
-                <span className="text-lg tracking-[0.4em] font-body text-white/80">24 . 12 . 2025</span>
+                <span className="text-lg tracking-[0.4em] font-body text-white/80">24 . 12 . 2026</span>
               </div>
             </motion.div>
           </motion.div>
@@ -361,7 +361,7 @@ export default function Home() {
           </motion.div>
         </WeddingSection>
 
-        {/* 3. Story Timeline */}
+        {/* 3. Story Timeline - Updated with 2018 and 2026 */}
         <WeddingSection id="story" bgImageId="story-bg" bgVariants={bgSlideUp}>
           <motion.div variants={staggerContainer} initial="hidden" whileInView="visible" className="space-y-16">
             <motion.div variants={fadeInUp} className="text-center">
@@ -377,9 +377,9 @@ export default function Home() {
               <div className="absolute left-[20px] top-2 bottom-2 w-[1px] bg-gradient-to-b from-white/5 via-white/20 to-white/5 -translate-x-1/2" />
               
               {[
-                { year: "2020", title: "Pertemuan Pertama", desc: "Di sebuah sudut kota Jakarta, takdir mempertemukan kami lewat percakapan sederhana yang tak berujung. Sebuah awal yang tak disangka namun sangat berharga." },
-                { year: "2023", title: "Komitmen Bersama", desc: "Melalui tawa dan air mata, kami menyadari bahwa rumah bukanlah sebuah tempat, melainkan satu sama lain. Kami berjanji untuk saling menguatkan dalam setiap langkah." },
-                { year: "2025", title: "Lembaran Baru", desc: "Kini, kami bersiap melangkah ke gerbang pernikahan, mengikat janji suci di hadapan Tuhan dan keluarga tercinta untuk selamanya." }
+                { year: "2018", title: "Pertemuan Pertama", desc: "Pertemuan awal kami yang bersemi saat diperkenalkan oleh kakak tercinta. Sebuah awal sederhana yang menuntun pada ikatan yang tak terputus." },
+                { year: "2018", title: "Komitmen Bersama", desc: "Di tahun yang sama, kami menyadari bahwa satu sama lain adalah pelabuhan terakhir. Kami berjanji untuk saling menguatkan dalam setiap langkah." },
+                { year: "2026", title: "Lembaran Baru", desc: "Kini, kami bersiap melangkah ke gerbang pernikahan, mengikat janji suci di hadapan Tuhan dan keluarga tercinta untuk selamanya." }
               ].map((item, index) => (
                 <motion.div key={index} variants={fadeInUp} className="relative group">
                   <div className="absolute left-[-20px] top-1.5 -translate-x-1/2 flex items-center justify-center">
@@ -431,7 +431,7 @@ export default function Home() {
                       </div>
                       <div className="flex items-center justify-center gap-3">
                         <Calendar className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">Minggu, 24 Desember 2025</span>
+                        <span className="tracking-widest uppercase">Minggu, 24 Desember 2026</span>
                       </div>
                     </div>
                   </div>
