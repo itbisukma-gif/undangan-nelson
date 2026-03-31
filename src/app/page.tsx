@@ -1,4 +1,3 @@
-
 "use client"
 
 import React, { useState, useEffect, useRef, useMemo } from "react"
@@ -80,26 +79,26 @@ export default function Home() {
 
   const { data: wishes, loading: loadingWishes } = useCollection(wishesQuery)
 
-  // Animation variants with explicit types for TS compatibility
+  // Animation variants
   const bgZoomOut: Variants = {
     hidden: { scale: 1.15, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.21, 0.47, 0.32, 0.98] } }
+    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: "easeOut" } }
   }
   const bgSlideRight: Variants = {
     hidden: { x: "8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.21, 0.47, 0.32, 0.98] } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
   }
   const bgSlideUp: Variants = {
     hidden: { y: "10%", opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 2, ease: [0.21, 0.47, 0.32, 0.98] } }
+    visible: { y: 0, opacity: 1, transition: { duration: 2, ease: "easeOut" } }
   }
   const bgSlideLeft: Variants = {
     hidden: { x: "-8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.21, 0.47, 0.32, 0.98] } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
   }
   const bgZoomIn: Variants = {
     hidden: { scale: 0.95, opacity: 0 },
-    visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: [0.21, 0.47, 0.32, 0.98] } }
+    visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: "easeOut" } }
   }
   const bgSoftFade: Variants = {
     hidden: { opacity: 0 },
@@ -201,6 +200,22 @@ export default function Home() {
       return
     }
 
+    // Prevent duplicates by checking existing wishes in current session data
+    const isDuplicate = wishes?.some(
+      (wish) => 
+        wish.name.toLowerCase() === rsvpName.toLowerCase() && 
+        wish.message.toLowerCase() === rsvpMessage.toLowerCase()
+    );
+
+    if (isDuplicate) {
+      toast({
+        variant: "destructive",
+        title: "Pesan Sudah Ada",
+        description: "Anda sudah mengirimkan ucapan dengan isi yang sama persis.",
+      });
+      return;
+    }
+
     const wishData = {
       name: rsvpName,
       status: rsvpStatus,
@@ -213,8 +228,8 @@ export default function Home() {
     addDoc(wishesRef, wishData)
       .then(() => {
         toast({
-          title: "Konfirmasi Terkirim",
-          description: `Terima kasih ${rsvpName}, ucapan Anda telah kami terima.`,
+          title: "Berhasil!",
+          description: `Terima kasih ${rsvpName}, konfirmasi dan ucapan Anda telah kami terima.`,
         })
         setRsvpMessage("")
         setRsvpStatus(null)
@@ -226,6 +241,12 @@ export default function Home() {
           requestResourceData: wishData,
         } satisfies SecurityRuleContext);
         errorEmitter.emit('permission-error', permissionError);
+        
+        toast({
+          variant: "destructive",
+          title: "Terjadi Kesalahan",
+          description: "Gagal mengirim konfirmasi. Silakan coba lagi nanti.",
+        })
       })
   }
 
@@ -242,7 +263,7 @@ export default function Home() {
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { duration: 0.8, ease: [0.21, 0.47, 0.32, 0.98] } 
+      transition: { duration: 0.8, ease: "easeOut" } 
     }
   }
 
@@ -387,7 +408,7 @@ export default function Home() {
             <div className="text-center">
               <motion.h2 variants={fadeInUp} className="text-4xl font-headline italic mb-4">Mempelai</motion.h2>
               <motion.p variants={fadeInUp} className="text-white/40 text-[10px] font-body italic tracking-wide max-w-[250px] mx-auto leading-relaxed">
-                "Maka jadilah mereka satu daging, karena kasih adalah pengikat yang sempurna."
+                "Kasih itu sabar; kasih itu murah hati; ia tidak cemburu. Ia tidak memegahkan diri dan tidak sombong."
               </motion.p>
             </div>
 
@@ -399,7 +420,7 @@ export default function Home() {
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2 text-balance">Nelson Mandela Sianturi</h3>
-                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putra ke-8 dari Bpk. A. Sianturi & Ibu D. br. Sinambela</p>
+                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putra ke-8 dari Bapak A. Sianturi dan Ibu D. br. Sinambela</p>
                 <Button asChild variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
                   <a href="https://instagram.com/nelson_antury" target="_blank" rel="noopener noreferrer">
                     <Instagram className="w-3.5 h-3.5" />
@@ -414,7 +435,7 @@ export default function Home() {
                   </div>
                 </div>
                 <h3 className="text-2xl font-headline italic mb-2">Suni Manik</h3>
-                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putri ke-6 dari Bpk. M. Manik & Ibu L. br. Simangunsong</p>
+                <p className="text-white/50 text-[10px] font-body mb-4 tracking-widest uppercase">Putri ke-6 dari Bapak M. Manik dan Ibu L. br. Simangunsong</p>
                 <Button asChild variant="outline" size="icon" className="w-8 h-8 rounded-full bg-white/5 border-white/10 hover:bg-white hover:text-black active:scale-90 transition-all">
                   <a href="https://instagram.com/suny_manik" target="_blank" rel="noopener noreferrer">
                     <Instagram className="w-3.5 h-3.5" />
