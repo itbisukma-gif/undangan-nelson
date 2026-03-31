@@ -1,6 +1,21 @@
-import type {Metadata} from 'next';
+import type { Metadata } from 'next';
 import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
+import { Playfair_Display, PT_Sans } from 'next/font/google'
+
+const playfair = Playfair_Display({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-headline',
+  style: ['normal', 'italic'],
+})
+
+const ptSans = PT_Sans({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-body',
+  weight: ['400', '700'],
+})
 
 export const metadata: Metadata = {
   title: 'The Wedding of Nelson & Suni',
@@ -13,12 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="id" className="dark scroll-smooth">
-      <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
-      </head>
+    <html lang="id" className={`${playfair.variable} ${ptSans.variable} dark scroll-smooth`}>
       <body className="font-body antialiased selection:bg-white selection:text-black overflow-x-hidden">
         {children}
         <Toaster />

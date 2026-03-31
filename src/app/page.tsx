@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { motion, AnimatePresence, Variants } from "framer-motion"
 import { WeddingSection } from "@/components/WeddingSection"
 import { NavigationPill } from "@/components/NavigationPill"
 import { Button } from "@/components/ui/button"
@@ -65,27 +65,28 @@ export default function Home() {
     { name: "Rina & Teman-teman", status: "Hadir", message: "Selamat ya! Lancar-lancar acaranya sampai hari H. Can't wait!" }
   ]
 
-  const bgZoomOut = {
+  // Animation variants with correct easing types to satisfy TS
+  const bgZoomOut: Variants = {
     hidden: { scale: 1.15, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.21, 0.47, 0.32, 0.98] } }
+    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: "easeOut" } }
   }
-  const bgSlideRight = {
+  const bgSlideRight: Variants = {
     hidden: { x: "8%", opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
   }
-  const bgSlideUp = {
+  const bgSlideUp: Variants = {
     hidden: { y: "10%", opacity: 0 },
     visible: { y: 0, opacity: 1, transition: { duration: 2, ease: "easeOut" } }
   }
-  const bgSlideLeft = {
+  const bgSlideLeft: Variants = {
     hidden: { x: "-8%", opacity: 0 },
     visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
   }
-  const bgZoomIn = {
+  const bgZoomIn: Variants = {
     hidden: { scale: 0.95, opacity: 0 },
     visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: "easeOut" } }
   }
-  const bgSoftFade = {
+  const bgSoftFade: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { duration: 2.2 } }
   }
@@ -110,11 +111,13 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const to = params.get("to")
-    if (to) {
-      setGuestName(to)
-      setRsvpName(to)
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search)
+      const to = params.get("to")
+      if (to) {
+        setGuestName(to)
+        setRsvpName(to)
+      }
     }
   }, [])
 
@@ -166,7 +169,7 @@ export default function Home() {
     })
   }
 
-  const staggerContainer = {
+  const staggerContainer: Variants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
@@ -177,7 +180,7 @@ export default function Home() {
     }
   }
 
-  const fadeInUp = {
+  const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
@@ -186,7 +189,7 @@ export default function Home() {
     }
   }
 
-  const coverBg = PlaceHolderImages.find(img => img.id === 'cover-bg')
+  const coverBg = PlaceHolderImages?.find(img => img.id === 'cover-bg')
 
   return (
     <main className="bg-black text-white selection:bg-white selection:text-black">
