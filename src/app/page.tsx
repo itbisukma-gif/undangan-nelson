@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
+import { useToast } from "@/hooks/use-toast"
 import { 
   Dialog,
   DialogContent,
@@ -53,13 +54,15 @@ export default function Home() {
   const [copiedId, setCopiedId] = useState<string | null>(null)
   const [isLocationOpen, setIsLocationOpen] = useState(false)
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
+  const { toast } = useToast()
   
   const audioRef = useRef<HTMLAudioElement>(null)
 
   const mockWishes = [
-    { name: "Keluarga Sianturi", status: "Hadir", message: "Selamat menempuh hidup baru Nelson & Suni. Semoga diberkati senantiasa." },
-    { name: "Sakti Manik", status: "Hadir", message: "Bahagia selalu ya kalian berdua sampai kakek nenek!" },
-    { name: "Rina & Teman-teman", status: "Hadir", message: "Selamat ya! Lancar-lancar acaranya sampai hari H." }
+    { name: "Keluarga Sianturi", status: "Hadir", message: "Selamat menempuh hidup baru Nelson & Suni. Semoga diberkati senantiasa dalam kasih Tuhan." },
+    { name: "Sakti Manik", status: "Hadir", message: "Bahagia selalu ya kalian berdua sampai kakek nenek! Lancar acaranya." },
+    { name: "Punguan Pomparan", status: "Hadir", message: "Selamat berbagia Nelson & Suni. Tuhan Yesus memberkati rumah tangga kalian." },
+    { name: "Rina & Teman-teman", status: "Hadir", message: "Selamat ya! Lancar-lancar acaranya sampai hari H. Can't wait!" }
   ]
 
   const bgZoomOut = {
@@ -120,8 +123,8 @@ export default function Home() {
     { id: 2, url: "/Background/Page_2.png" },
     { id: 3, url: "/Background/Page_3.png" },
     { id: 4, url: "/Background/Page_4.png" },
-    { id: 6, url: "/Background/Page_6.png" },
-    { id: 7, url: "/Background/Page_7.png" },
+    { id: 5, url: "/Background/Page_6.png" },
+    { id: 6, url: "/Background/Page_7.png" },
   ]
 
   useEffect(() => {
@@ -138,23 +141,11 @@ export default function Home() {
     }
   }, [isMuted])
 
-  useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (document.hidden) {
-        audioRef.current?.pause()
-      } else if (isOpen && !isMuted) {
-        audioRef.current?.play().catch(() => {})
-      }
-    }
-    document.addEventListener("visibilitychange", handleVisibilityChange)
-    return () => document.removeEventListener("visibilitychange", handleVisibilityChange)
-  }, [isOpen, isMuted])
-
   const handleOpenInvitation = () => {
     setIsOpen(true)
     if (audioRef.current) {
       audioRef.current.play().catch((error) => {
-        console.log("Autoplay prevented by browser:", error)
+        console.log("Autoplay blocked:", error)
       })
     }
   }
@@ -163,6 +154,16 @@ export default function Home() {
     navigator.clipboard.writeText(text.replace(/\s/g, ''))
     setCopiedId(id)
     setTimeout(() => setCopiedId(null), 2000)
+    toast({
+      description: "Nomor rekening berhasil disalin.",
+    })
+  }
+
+  const handleSendRSVP = () => {
+    toast({
+      title: "Konfirmasi Terkirim",
+      description: `Terima kasih ${rsvpName}, konfirmasi Anda telah kami terima.`,
+    })
   }
 
   const staggerContainer = {
@@ -586,7 +587,10 @@ export default function Home() {
                 <Button variant="outline" className="flex-1 bg-white/5 border-white/10 h-14 rounded-xl active:bg-white active:text-black transition-all font-body text-xs">Absen</Button>
               </div>
               <Textarea placeholder="Pesan & Harapan..." className="bg-transparent border-white/10 min-h-[120px] rounded-xl focus:ring-1 focus:ring-white/40 font-body text-xs" />
-              <Button className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl text-xs">
+              <Button 
+                onClick={handleSendRSVP}
+                className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
+              >
                 KIRIM KONFIRMASI <Send className="ml-2 w-4 h-4" />
               </Button>
             </motion.div>
