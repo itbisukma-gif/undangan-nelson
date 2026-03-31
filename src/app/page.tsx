@@ -38,7 +38,8 @@ import {
   Check,
   ExternalLink,
   MessageSquare,
-  User2
+  User2,
+  Loader2
 } from "lucide-react"
 import Image from "next/image"
 import { cn } from "@/lib/utils"
@@ -61,6 +62,7 @@ export default function Home() {
   const [rsvpName, setRsvpName] = useState("")
   const [rsvpStatus, setRsvpStatus] = useState<"Hadir" | "Absen" | null>(null)
   const [rsvpMessage, setRsvpMessage] = useState("")
+  const [isSending, setIsSending] = useState(false)
   const [selectedImage, setSelectedImage] = useState<string | null>(null)
   const [activeGalleryIndex, setActiveGalleryIndex] = useState(0)
   const [copiedId, setCopiedId] = useState<string | null>(null)
@@ -82,23 +84,23 @@ export default function Home() {
   // Animation variants
   const bgZoomOut: Variants = {
     hidden: { scale: 1.15, opacity: 0 },
-    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: "easeOut" } }
+    visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSlideRight: Variants = {
     hidden: { x: "8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSlideUp: Variants = {
     hidden: { y: "10%", opacity: 0 },
-    visible: { y: 0, opacity: 1, transition: { duration: 2, ease: "easeOut" } }
+    visible: { y: 0, opacity: 1, transition: { duration: 2, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSlideLeft: Variants = {
     hidden: { x: "-8%", opacity: 0 },
-    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: "easeOut" } }
+    visible: { x: 0, opacity: 1, transition: { duration: 1.8, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgZoomIn: Variants = {
     hidden: { scale: 0.95, opacity: 0 },
-    visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: "easeOut" } }
+    visible: { scale: 1.05, opacity: 1, transition: { duration: 3, ease: [0.22, 1, 0.36, 1] } }
   }
   const bgSoftFade: Variants = {
     hidden: { opacity: 0 },
@@ -216,6 +218,8 @@ export default function Home() {
       return;
     }
 
+    setIsSending(true)
+
     const wishData = {
       name: rsvpName,
       status: rsvpStatus,
@@ -227,6 +231,7 @@ export default function Home() {
     
     addDoc(wishesRef, wishData)
       .then(() => {
+        setIsSending(false)
         toast({
           title: "Berhasil!",
           description: `Terima kasih ${rsvpName}, konfirmasi dan ucapan Anda telah kami terima.`,
@@ -235,6 +240,7 @@ export default function Home() {
         setRsvpStatus(null)
       })
       .catch(async (error) => {
+        setIsSending(false)
         const permissionError = new FirestorePermissionError({
           path: wishesRef.path,
           operation: 'create',
@@ -263,7 +269,7 @@ export default function Home() {
     visible: { 
       opacity: 1, 
       y: 0, 
-      transition: { duration: 0.8, ease: "easeOut" } 
+      transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } 
     }
   }
 
@@ -523,7 +529,7 @@ export default function Home() {
                       </div>
                       <div className="flex items-center justify-center gap-3">
                         <MapPin className="w-3.5 h-3.5" />
-                        <span className="tracking-widest uppercase">Lumban Pinasa, Desa Gonting Garoga, Kec. Garoga</span>
+                        <span className="tracking-widest uppercase">{`Lumban Pinasa, Desa Gonting Garoga, Kec. Garoga`}</span>
                       </div>
                     </div>
                   </div>
@@ -684,9 +690,14 @@ export default function Home() {
               />
               <Button 
                 onClick={handleSendRSVP}
+                disabled={isSending}
                 className="w-full h-16 bg-white text-black hover:bg-white/90 font-bold tracking-[0.3em] rounded-2xl active:scale-95 transition-all shadow-xl text-xs"
               >
-                KIRIM KONFIRMASI <Send className="ml-2 w-4 h-4" />
+                {isSending ? (
+                  <>MENGIRIM... <Loader2 className="ml-2 w-4 h-4 animate-spin" /></>
+                ) : (
+                  <>KIRIM KONFIRMASI <Send className="ml-2 w-4 h-4" /></>
+                )}
               </Button>
             </motion.div>
           </motion.div>
