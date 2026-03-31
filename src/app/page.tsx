@@ -55,14 +55,12 @@ export default function Home() {
   
   const audioRef = useRef<HTMLAudioElement>(null)
 
-  // Mock data for wishes
   const mockWishes = [
     { name: "Keluarga Sianturi", status: "Hadir", message: "Selamat menempuh hidup baru Nelson & Suni. Semoga diberkati senantiasa." },
     { name: "Sakti Manik", status: "Hadir", message: "Bahagia selalu ya kalian berdua sampai kakek nenek!" },
     { name: "Rina & Teman-teman", status: "Hadir", message: "Selamat ya! Lancar-lancar acaranya sampai hari H." }
   ]
 
-  // Background Animation Variants
   const bgZoomOut = {
     hidden: { scale: 1.15, opacity: 0 },
     visible: { scale: 1, opacity: 1, transition: { duration: 2.5, ease: [0.21, 0.47, 0.32, 0.98] } }
@@ -88,7 +86,6 @@ export default function Home() {
     visible: { opacity: 1, transition: { duration: 2.2 } }
   }
 
-  // Countdown Logic to 2026-12-24
   useEffect(() => {
     const targetDate = new Date("2026-12-24T09:00:00").getTime()
     const timer = setInterval(() => {
@@ -131,7 +128,6 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [isOpen, galleryImages.length])
 
-  // Audio Control Logic
   useEffect(() => {
     if (audioRef.current) {
       audioRef.current.muted = isMuted
@@ -530,16 +526,16 @@ export default function Home() {
             <div className="grid gap-6">
               <motion.div variants={fadeInUp}>
                 <div className="p-8 rounded-[2rem] bg-glass border-white/10">
-                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Central Asia</p>
+                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Rakyat Indonesia (BRI)</p>
                   <div className="flex items-center justify-between gap-4 mb-4">
-                    <p className="text-xl md:text-3xl font-mono tracking-tighter">123 456 7890</p>
+                    <p className="text-xl md:text-3xl font-mono tracking-tighter">779701009947530</p>
                     <Button 
                       variant="ghost" 
                       size="icon" 
                       className="w-10 h-10 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-all active:scale-90"
-                      onClick={() => handleCopy("123 456 7890", "bca")}
+                      onClick={() => handleCopy("779701009947530", "bri")}
                     >
-                      {copiedId === "bca" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                      {copiedId === "bri" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
                   <p className="text-white/40 text-[9px] uppercase tracking-widest font-body">a.n Nelson Mandela Sianturi</p>
@@ -547,19 +543,19 @@ export default function Home() {
               </motion.div>
               <motion.div variants={fadeInUp}>
                 <div className="p-8 rounded-[2rem] bg-glass border-white/10">
-                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Mandiri</p>
+                  <p className="font-bold text-[9px] tracking-[0.3em] uppercase mb-4 opacity-70 font-body">Bank Negara Indonesia (BNI)</p>
                   <div className="flex items-center justify-between gap-4 mb-4">
-                    <p className="text-xl md:text-3xl font-mono tracking-tighter">098 765 4321</p>
+                    <p className="text-xl md:text-3xl font-mono tracking-tighter">1977860504</p>
                     <Button 
                       variant="ghost" 
                       size="icon" 
                       className="w-10 h-10 rounded-full hover:bg-white/10 text-white/50 hover:text-white transition-all active:scale-90"
-                      onClick={() => handleCopy("098 765 4321", "mandiri")}
+                      onClick={() => handleCopy("1977860504", "bni")}
                     >
-                      {copiedId === "mandiri" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
+                      {copiedId === "bni" ? <Check className="w-4 h-4 text-green-400" /> : <Copy className="w-4 h-4" />}
                     </Button>
                   </div>
-                  <p className="text-white/40 text-[9px] uppercase tracking-widest font-body">a.n Suni Manik</p>
+                  <p className="text-white/40 text-[9px] uppercase tracking-widest font-body">a.n Nelson Mandela Sianturi</p>
                 </div>
               </motion.div>
             </div>
