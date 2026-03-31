@@ -713,7 +713,7 @@ export default function Home() {
                   asChild
                   className="w-full h-12 bg-white text-black hover:bg-white/90 font-bold tracking-[0.1em] rounded-xl transition-all shadow-lg"
                 >
-                  <a href="https://maps.google.com" target="_blank" rel="noopener noreferrer">
+                  <a href="https://maps.app.goo.gl/s3kzvppHJAowaABR7" target="_blank" rel="noopener noreferrer">
                     BUKA GOOGLE MAPS <ExternalLink className="ml-2 w-4 h-4" />
                   </a>
                 </Button>
