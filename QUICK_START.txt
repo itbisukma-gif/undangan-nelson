@@ -1,0 +1,293 @@
+================================================================================
+  FIREBASE TO SUPABASE MIGRATION - QUICK START REFERENCE
+================================================================================
+
+START HERE: Read MIGRATION_README.md first
+
+================================================================================
+  STEP-BY-STEP (20 MINUTES)
+================================================================================
+
+[ ] STEP 1: CREATE DATABASE SCHEMA (2 min)
+    1. Go to: https://supabase.com/dashboard
+    2. Select your project
+    3. Go to SQL Editor → New Query
+    4. Copy SQL from: scripts/01_create_schema.sql
+    5. Click Run
+    
+[ ] STEP 2: VERIFY ENVIRONMENT VARIABLES (1 min)
+    1. Go to Vercel Project Settings
+    2. Find Variables section
+    3. Confirm: NEXT_PUBLIC_SUPABASE_URL is set
+    4. Confirm: NEXT_PUBLIC_SUPABASE_ANON_KEY is set
+
+[ ] STEP 3: INSTALL DEPENDENCIES (1 min)
+    npm install
+
+[ ] STEP 4: TEST LOCALLY (5 min)
+    npm run dev
+    http://localhost:9002
+    Submit a test RSVP
+    Check that it appears in the list
+
+[ ] STEP 5: VERIFY IN SUPABASE (2 min)
+    1. Go to Supabase Dashboard
+    2. Table Editor
+    3. Select wishes table
+    4. Confirm your test entry is there
+
+[ ] STEP 6: DEPLOY TO PRODUCTION (3 min)
+    git add .
+    git commit -m "Migrate Firebase to Supabase"
+    git push origin main
+    Wait for Vercel to deploy
+    Test production URL
+
+[ ] STEP 7: FINAL VERIFICATION (3 min)
+    Test RSVP on production
+    Verify real-time updates
+    Check Supabase for new entries
+
+✅ DONE! Migration complete
+
+================================================================================
+  ENVIRONMENT VARIABLES NEEDED
+================================================================================
+
+NEXT_PUBLIC_SUPABASE_URL=https://your-url.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+
+Get these from: Supabase Settings → API
+
+================================================================================
+  KEY FILES CREATED
+================================================================================
+
+NEW Supabase Files:
+  ✓ src/supabase/client.ts          Browser client
+  ✓ src/supabase/server.ts          Server client
+  ✓ src/supabase/auth/use-auth.tsx  Auth provider
+  ✓ src/supabase/hooks/use-wishes.tsx  Data hook
+
+UPDATED Files:
+  ✓ src/app/layout.tsx              Uses AuthProvider
+  ✓ src/app/page.tsx                Uses useWishes
+  ✓ package.json                    +2 packages
+
+DATABASE:
+  ✓ scripts/01_create_schema.sql    SQL migration
+
+DOCUMENTATION:
+  ✓ MIGRATION_README.md             Start here
+  ✓ MIGRATION_SUMMARY.md            Overview
+  ✓ SUPABASE_SETUP.md              Full setup
+  ✓ MIGRATION_INSTRUCTIONS.md      Code details
+  ✓ MIGRATION_CHECKLIST.md         Verification
+  ✓ PROJECT_STRUCTURE.md           File organization
+  ✓ VISUAL_GUIDE.md                Diagrams
+  ✓ DOCS_INDEX.md                  Doc navigation
+  ✓ QUICK_START.txt               This file
+
+================================================================================
+  KEY HOOKS
+================================================================================
+
+For RSVP Data:
+  import { useWishes } from '@/supabase/hooks/use-wishes'
+  const { wishes, loading, addWish } = useWishes()
+
+For Authentication:
+  import { useAuth } from '@/supabase/auth/use-auth'
+  const { user, loading, signOut } = useAuth()
+
+================================================================================
+  DEPENDENCIES ADDED
+================================================================================
+
+@supabase/supabase-js: ^2.43.0      (Core client)
+@supabase/ssr: ^0.4.0               (SSR support)
+
+Install with: npm install
+
+================================================================================
+  DATABASE SCHEMA
+================================================================================
+
+Table: public.wishes
+  - id: UUID (auto-generated)
+  - name: TEXT
+  - status: TEXT ('Hadir' or 'Absen')
+  - message: TEXT
+  - created_at: TIMESTAMP (auto-generated)
+
+RLS Policies:
+  ✓ Allow public read
+  ✓ Allow public insert
+  ✓ Prevent update/delete
+
+Indexes:
+  ✓ idx_wishes_created_at (for ordering)
+  ✓ idx_wishes_status (for filtering)
+
+================================================================================
+  QUICK TROUBLESHOOTING
+================================================================================
+
+Problem: env vars not loading
+  → Restart dev server after updating .env.local
+
+Problem: Table doesn't exist
+  → Run SQL migration in Supabase SQL Editor
+
+Problem: CORS errors
+  → Check Supabase project CORS settings
+
+Problem: Real-time not working
+  → Check Realtime is enabled in Supabase settings
+
+Problem: RLS policy errors
+  → Verify exact SQL policies from 01_create_schema.sql
+
+See full troubleshooting in: SUPABASE_SETUP.md
+
+================================================================================
+  SUCCESS INDICATORS
+================================================================================
+
+✅ After Setup:
+   • npm run dev starts without errors
+   • App loads in browser
+   • RSVP form renders
+
+✅ After Testing:
+   • Can submit RSVP
+   • Data appears in wish list
+   • Supabase dashboard shows entry
+   • No console errors
+
+✅ After Production:
+   • Production URL works
+   • RSVP submissions work
+   • Real-time updates work
+   • Multiple browser sync works
+
+================================================================================
+  TOTAL TIME ESTIMATE
+================================================================================
+
+Setup:           5 minutes
+Installation:    2 minutes
+Local Testing:   10 minutes
+Deployment:      5 minutes
+Final Verify:    3 minutes
+─────────────────────────────
+TOTAL:          25 minutes
+
+Optional cleanup (remove Firebase): +5 minutes
+
+================================================================================
+  DOCUMENTATION READING ORDER
+================================================================================
+
+For Quick Setup:
+  1. MIGRATION_README.md (5 min)
+  2. This file (2 min)
+  3. SUPABASE_SETUP.md (10 min)
+  4. MIGRATION_CHECKLIST.md (5 min)
+
+For Full Understanding:
+  1. MIGRATION_README.md
+  2. VISUAL_GUIDE.md
+  3. MIGRATION_SUMMARY.md
+  4. All other docs as needed
+
+================================================================================
+  NEXT ACTIONS
+================================================================================
+
+Right now:
+  → Read MIGRATION_README.md
+
+In 5 minutes:
+  → Go to Supabase and create schema
+
+In 10 minutes:
+  → Run npm install
+  → Test locally with npm run dev
+
+In 20 minutes:
+  → Deploy to production
+
+In 30 minutes:
+  → You're done! 🎉
+
+================================================================================
+  HELPFUL LINKS
+================================================================================
+
+Supabase Dashboard:     https://supabase.com/dashboard
+SQL Editor:             [Your Project] → SQL Editor
+Table Editor:          [Your Project] → Table Editor
+Realtime Settings:     [Your Project] → Realtime
+CORS Settings:         [Your Project] → Settings → API
+
+Supabase Docs:         https://supabase.com/docs
+Next.js + Supabase:    https://supabase.com/docs/guides/getting-started/frameworks/nextjs
+
+Vercel Dashboard:      https://vercel.com/dashboard
+Project Settings:      [Your Project] → Settings → Environment Variables
+
+================================================================================
+  ROLLBACK PLAN (IF NEEDED)
+================================================================================
+
+If something goes wrong:
+
+1. Push Firebase version:
+   git push origin firebase-to-supabase-migration
+
+2. Switch to main with Firebase:
+   git checkout main (original Firebase version)
+
+3. Redeploy:
+   git push origin main
+
+Firebase files are kept for reference/rollback
+
+================================================================================
+  WHEN TO READ FULL DOCS
+================================================================================
+
+If something goes wrong:
+  → Check MIGRATION_CHECKLIST.md Common Issues
+
+If you want details:
+  → Read MIGRATION_SUMMARY.md (technical details)
+  → Read PROJECT_STRUCTURE.md (file organization)
+
+If you're curious how it works:
+  → Read MIGRATION_INSTRUCTIONS.md
+  → Look at src/supabase/ files
+
+If you want visual understanding:
+  → Read VISUAL_GUIDE.md
+
+If you're lost:
+  → Read MIGRATION_README.md
+  → Check DOCS_INDEX.md for navigation
+
+================================================================================
+  KEY DIFFERENCES FROM FIREBASE
+================================================================================
+
+Database:        Firestore (NoSQL) → PostgreSQL (SQL)
+Real-time:       Listeners → Subscriptions
+Queries:         Firestore API → SQL + Hooks
+Security:        Security Rules → Row Level Security (RLS)
+Hosting:         Firebase → Supabase
+Cost Model:      Per operation → Database size
+
+======================== GOOD LUCK! 🚀 =====================================
+
+Questions? See MIGRATION_README.md or DOCS_INDEX.md
+

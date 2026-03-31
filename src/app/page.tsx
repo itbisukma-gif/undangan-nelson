@@ -44,16 +44,7 @@ import {
 import Image from "next/image"
 import { cn } from "@/lib/utils"
 import { PlaceHolderImages } from "@/lib/placeholder-images"
-import { 
-  collection, 
-  addDoc, 
-  query, 
-  orderBy, 
-  serverTimestamp
-} from "firebase/firestore"
-import { useFirestore, useCollection } from "@/firebase"
-import { errorEmitter } from '@/firebase/error-emitter'
-import { FirestorePermissionError, type SecurityRuleContext } from '@/firebase/errors'
+import { useWishes } from "@/supabase/hooks/use-wishes"
 
 export default function Home() {
   const [isOpen, setIsOpen] = useState(false)
@@ -71,15 +62,9 @@ export default function Home() {
   const { toast } = useToast()
   
   const audioRef = useRef<HTMLAudioElement>(null)
-  const firestore = useFirestore()
 
-  // Real-time Wishes from Firestore
-  const wishesQuery = useMemo(() => {
-    if (!firestore) return null
-    return query(collection(firestore, "wishes"), orderBy("createdAt", "desc"))
-  }, [firestore])
-
-  const { data: wishes, loading: loadingWishes } = useCollection(wishesQuery)
+  // Real-time Wishes from Supabase
+  const { wishes, loading: loadingWishes, addWish } = useWishes()
 
   // Animation variants
   const bgZoomOut: Variants = {
@@ -192,8 +177,8 @@ export default function Home() {
     toast({ description: "Nomor rekening berhasil disalin." })
   }
 
-  const handleSendRSVP = () => {
-    if (!firestore || !rsvpName || !rsvpStatus || !rsvpMessage) {
+  const handleSendRSVP = async () => {
+    if (!rsvpName || !rsvpStatus || !rsvpMessage) {
       toast({
         variant: "destructive",
         title: "Data belum lengkap",
@@ -224,36 +209,26 @@ export default function Home() {
       name: rsvpName,
       status: rsvpStatus,
       message: rsvpMessage,
-      createdAt: serverTimestamp()
     }
 
-    const wishesRef = collection(firestore, "wishes")
+    const result = await addWish(wishData)
     
-    addDoc(wishesRef, wishData)
-      .then(() => {
-        setIsSending(false)
-        toast({
-          title: "Berhasil!",
-          description: `Terima kasih ${rsvpName}, konfirmasi dan ucapan Anda telah kami terima.`,
-        })
-        setRsvpMessage("")
-        setRsvpStatus(null)
+    if (result) {
+      setIsSending(false)
+      toast({
+        title: "Berhasil!",
+        description: `Terima kasih ${rsvpName}, konfirmasi dan ucapan Anda telah kami terima.`,
       })
-      .catch(async (error) => {
-        setIsSending(false)
-        const permissionError = new FirestorePermissionError({
-          path: wishesRef.path,
-          operation: 'create',
-          requestResourceData: wishData,
-        } satisfies SecurityRuleContext);
-        errorEmitter.emit('permission-error', permissionError);
-        
-        toast({
-          variant: "destructive",
-          title: "Terjadi Kesalahan",
-          description: "Gagal mengirim konfirmasi. Silakan coba lagi nanti.",
-        })
+      setRsvpMessage("")
+      setRsvpStatus(null)
+    } else {
+      setIsSending(false)
+      toast({
+        variant: "destructive",
+        title: "Terjadi Kesalahan",
+        description: "Gagal mengirim konfirmasi. Silakan coba lagi nanti.",
       })
+    }
   }
 
   const staggerContainer: Variants = {
