@@ -79,7 +79,29 @@ export default function Home() {
     return query(collection(firestore, "wishes"), orderBy("createdAt", "desc"))
   }, [firestore])
 
-  const { data: wishes, loading: loadingWishes } = useCollection(wishesQuery)
+  const { data: wishesFromDb, loading: loadingWishes } = useCollection(wishesQuery)
+  
+  // Local state for optimistic updates
+  const [pendingWishes, setPendingWishes] = useState<Array<{
+    id: string
+    name: string
+    status: string
+    message: string
+    createdAt: Date | null
+    isPending?: boolean
+  }>>([])
+  
+  // Combine pending wishes with database wishes for instant display
+  const wishes = useMemo(() => {
+    const dbWishes = wishesFromDb || []
+    // Filter out pending wishes that already exist in db
+    const filteredPending = pendingWishes.filter(
+      pw => !dbWishes.some(dw => 
+        dw.name === pw.name && dw.message === pw.message
+      )
+    )
+    return [...filteredPending, ...dbWishes]
+  }, [wishesFromDb, pendingWishes])
 
   // Animation variants
   const bgZoomOut: Variants = {
@@ -226,12 +248,26 @@ export default function Home() {
       message: rsvpMessage,
       createdAt: serverTimestamp()
     }
+    
+    // Optimistic update - add to pending wishes immediately for instant display
+    const tempId = `temp-${Date.now()}`
+    const optimisticWish = {
+      id: tempId,
+      name: rsvpName,
+      status: rsvpStatus,
+      message: rsvpMessage,
+      createdAt: new Date(),
+      isPending: true
+    }
+    setPendingWishes(prev => [optimisticWish, ...prev])
 
     const wishesRef = collection(firestore, "wishes")
     
     addDoc(wishesRef, wishData)
       .then(() => {
         setIsSending(false)
+        // Remove from pending (will be replaced by real data from Firestore subscription)
+        setPendingWishes(prev => prev.filter(w => w.id !== tempId))
         toast({
           title: "Berhasil!",
           description: `Terima kasih ${rsvpName}, konfirmasi dan ucapan Anda telah kami terima.`,
@@ -241,6 +277,8 @@ export default function Home() {
       })
       .catch(async (error) => {
         setIsSending(false)
+        // Remove the optimistic update on error
+        setPendingWishes(prev => prev.filter(w => w.id !== tempId))
         const permissionError = new FirestorePermissionError({
           path: wishesRef.path,
           operation: 'create',
@@ -716,27 +754,49 @@ export default function Home() {
               {loadingWishes ? (
                 <div className="py-10 text-white/40 text-xs italic">Memuat ucapan...</div>
               ) : wishes && wishes.length > 0 ? (
-                wishes.map((wish, idx) => (
-                  <div key={idx} className="p-6 rounded-2xl bg-glass border-white/10 text-left space-y-3">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
-                          <User2 className="w-4 h-4 text-white/40" />
+                <AnimatePresence mode="popLayout">
+                  {wishes.map((wish) => (
+                    <motion.div 
+                      key={wish.id}
+                      layout
+                      initial={{ opacity: 0, y: -20, scale: 0.95 }}
+                      animate={{ opacity: wish.isPending ? 0.7 : 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3, ease: "easeOut" }}
+                      className={cn(
+                        "p-6 rounded-2xl bg-glass border-white/10 text-left space-y-3",
+                        wish.isPending && "animate-pulse"
+                      )}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center border border-white/10">
+                            {wish.isPending ? (
+                              <Loader2 className="w-4 h-4 text-white/40 animate-spin" />
+                            ) : (
+                              <User2 className="w-4 h-4 text-white/40" />
+                            )}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <p className="text-sm font-headline italic text-white/90">{wish.name}</p>
+                            {wish.isPending && (
+                              <span className="text-[8px] uppercase tracking-widest text-white/40">Mengirim...</span>
+                            )}
+                          </div>
                         </div>
-                        <p className="text-sm font-headline italic text-white/90">{wish.name}</p>
+                        <span className={cn(
+                          "text-[9px] uppercase tracking-widest font-bold px-2 py-1 rounded-md",
+                          wish.status === "Hadir" ? "text-green-400 bg-green-400/10" : "text-red-400 bg-red-400/10"
+                        )}>
+                          {wish.status}
+                        </span>
                       </div>
-                      <span className={cn(
-                        "text-[9px] uppercase tracking-widest font-bold px-2 py-1 rounded-md",
-                        wish.status === "Hadir" ? "text-green-400 bg-green-400/10" : "text-red-400 bg-red-400/10"
-                      )}>
-                        {wish.status}
-                      </span>
-                    </div>
-                    <p className="text-xs text-white/60 font-body italic leading-relaxed">
-                      "{wish.message}"
-                    </p>
-                  </div>
-                ))
+                      <p className="text-xs text-white/60 font-body italic leading-relaxed">
+                        &quot;{wish.message}&quot;
+                      </p>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
               ) : (
                 <div className="py-10 text-white/40 text-xs italic">Belum ada ucapan. Jadilah yang pertama!</div>
               )}
