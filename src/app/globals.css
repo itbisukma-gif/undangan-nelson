@@ -1,10 +1,13 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ============================================
+   CSS CUSTOM PROPERTIES
+   ============================================ */
 @layer base {
   :root {
+    /* Colors - Monochromatic Elegant */
     --background: 0 0% 0%;
     --foreground: 0 0% 100%;
     --card: 0 0% 3%;
@@ -25,6 +28,8 @@
     --input: 0 0% 15%;
     --ring: 0 0% 100%;
     --radius: 1.5rem;
+
+    /* Chart colors */
     --chart-1: 0 0% 100%;
     --chart-2: 0 0% 80%;
     --chart-3: 0 0% 60%;
@@ -33,41 +38,228 @@
   }
 }
 
+/* ============================================
+   BASE STYLES
+   ============================================ */
 @layer base {
   * {
     @apply border-border;
   }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
   body {
-    @apply bg-background text-foreground font-body overflow-x-hidden selection:bg-white selection:text-black;
+    @apply bg-background text-foreground font-body overflow-x-hidden;
     -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
   }
-  h1, h2, h3, h4, h5, h6 {
-    @apply font-headline;
+
+  /* Typography hierarchy */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-headline text-balance;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-display;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-heading-md;
+  }
+
+  /* Selection styles */
+  ::selection {
+    @apply bg-white text-black;
+  }
+
+  /* Focus visible styles for accessibility */
+  :focus-visible {
+    @apply outline-none ring-2 ring-white/50 ring-offset-2 ring-offset-black;
+  }
+
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-.bg-glass {
-  @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08];
+/* ============================================
+   COMPONENT STYLES
+   ============================================ */
+@layer components {
+  /* Glass morphism card */
+  .bg-glass {
+    @apply bg-white/[0.03] backdrop-blur-xl border border-white/[0.08];
+  }
+
+  /* Glass morphism card - subtle variant */
+  .bg-glass-subtle {
+    @apply bg-white/[0.02] backdrop-blur-lg border border-white/[0.05];
+  }
+
+  /* Content container */
+  .container-content {
+    @apply mx-auto w-full max-w-md px-6 sm:px-8;
+  }
+
+  /* Wide container for galleries */
+  .container-wide {
+    @apply mx-auto w-full max-w-5xl px-6 sm:px-8;
+  }
+
+  /* Section padding */
+  .section-padding {
+    @apply pt-24 pb-32 sm:pt-28 sm:pb-36;
+  }
 }
 
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+/* ============================================
+   UTILITY STYLES
+   ============================================ */
+@layer utilities {
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Custom scrollbar for when needed */
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-white/5 rounded-full;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/20 rounded-full hover:bg-white/30;
+  }
+
+  /* Text balance utility */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Text pretty for body text */
+  .text-pretty {
+    text-wrap: pretty;
+  }
+
+  /* Gradient text */
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-white to-white/60;
+  }
+
+  /* Hover lift effect */
+  .hover-lift {
+    @apply transition-transform duration-300 hover:-translate-y-1;
+  }
+
+  /* Press effect */
+  .press-effect {
+    @apply active:scale-95 transition-transform;
+  }
+
+  /* Safe area padding for mobile */
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
 }
 
-.text-balance {
-  text-wrap: balance;
-}
-
+/* ============================================
+   ANIMATIONS
+   ============================================ */
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Animation classes */
 .animate-float {
   animation: float 4s ease-in-out infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s linear infinite;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+/* Staggered animation delays */
+.stagger-1 {
+  animation-delay: 0.1s;
+}
+.stagger-2 {
+  animation-delay: 0.2s;
+}
+.stagger-3 {
+  animation-delay: 0.3s;
+}
+.stagger-4 {
+  animation-delay: 0.4s;
+}
+.stagger-5 {
+  animation-delay: 0.5s;
 }
